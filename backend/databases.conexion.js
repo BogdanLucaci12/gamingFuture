@@ -24,4 +24,4 @@ const publicPool = new Pool({
     port: process.env.PORT,
 });
 
-module.exports = adminPool
+module.exports = {adminPool, employeePool}
