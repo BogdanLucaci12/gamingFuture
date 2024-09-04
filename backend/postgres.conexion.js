@@ -1,4 +1,4 @@
-const { Pool } = require('pg')
+const { Pool, Client } = require('pg')
 require('dotenv').config()
 const adminPool = new Pool({
     user: process.env.USERADMIN,
@@ -24,4 +24,4 @@ const publicPool = new Pool({
     port: process.env.PORT,
 });
 
-module.exports = {adminPool, employeePool}
+module.exports = { adminPool, employeePool, publicPool }

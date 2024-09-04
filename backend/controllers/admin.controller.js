@@ -1,4 +1,4 @@
-const {adminPool} =require('../databases.conexion')
+const {adminPool} =require('../postgres.conexion')
 
 async function logInAdmin (req, res){
     try{
