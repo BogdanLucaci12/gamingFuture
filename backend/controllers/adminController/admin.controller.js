@@ -1,5 +1,6 @@
-const {adminPool} =require('../postgres.conexion')
-
+const {adminPool} =require('../../postgres.conexion')
+const { hashPsssword }=require ('../../customFunction/cryptPassword')
+const hashUser = require('../../customFunction/cryptData')
 async function logInAdmin (req, res){
     try{
         const { username, password } = req.body;
@@ -36,7 +37,7 @@ async function deleteUser(req, res){
     }
 }
 
-async function addUserAdmin(req, res){
+async function addEmployeeUser(req, res){
     try{
         const { username, password } = req.body;
         if (!username) {
@@ -45,12 +46,17 @@ async function addUserAdmin(req, res){
         if (!password) {
             return res.status(400).send({ message: 'Password is required' });
         }
-        await adminPool.query("INSERT INTO admin(username, password) VALUES ($1, $2)", [username, password])
+        console.log(username, password)
+        const cryptPassword = await hashPsssword(password)
+        const cryptUser = hashUser(username)
+        const verifiedUSerUnique = await adminPool.query("Select username from employee_user where username=$1", [cryptUser])
+        if (verifiedUSerUnique.rowCount>0){throw new Error("Username allready in use")}
+        if(cryptPassword.error){throw new Error(cryptPassword.error)}
+        await adminPool.query("INSERT INTO employee_user(username, password) VALUES ($1, $2)", [cryptUser, cryptPassword])
         return res.status(200).send({message:"User added with succes"})
-
     }
     catch(error){
         res.status(500).json({ message: 'Error creating user', error: error.message });
     }
 }
-module.exports = { logInAdmin, deleteUser, addUserAdmin }
+module.exports = { logInAdmin, deleteUser, addEmployeeUser }

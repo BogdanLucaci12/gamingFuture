@@ -1,6 +1,6 @@
 const express = require('express')
 
-const { logInAdmin, deleteUser, addUserAdmin } = require('../controllers/admin.controller')
+const { logInAdmin, deleteUser, addEmployeeUser } = require('../controllers/adminController/admin.controller')
 
 const adminRouter = express.Router()
 
@@ -9,5 +9,6 @@ adminRouter.use((req, res, next)=>{
 })
 adminRouter.get('/', logInAdmin)
 adminRouter.delete('/delete', deleteUser)
-adminRouter.post('/add', addUserAdmin)
+adminRouter.post('/addEmployeeUser', addEmployeeUser)
+
 module.exports = adminRouter
