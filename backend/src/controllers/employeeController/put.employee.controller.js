@@ -1,6 +1,9 @@
 const { employeePool } = require('../../configAndConnection/postgres.conexion')
 const { capitalizeFirstLetter, checkCorrectPrice } = require('../../customFunction/customFunction');
 const { uploadPhotoToFirebase } = require('../firebase.controller');
+const hashData =require('../../customFunction/cryptData')
+const { hashPassword }=require('../../customFunction/cryptPassword')
+
 async function updateProduct(req, res) {
     let querySnippet
     try {
@@ -28,7 +31,7 @@ async function updateProduct(req, res) {
         querySnippet += fieldsToUpdate.join(', ') + ', updated_at = NOW() WHERE id = $' + (fieldsToUpdate.length + 1);
         params.push(parseInt(productId));
         await employeePool.query(querySnippet, params)
-        res.status(200).send({ succes: "Product updated successfully" });
+        res.status(200).send({ success: "Product updated successfully" });
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
@@ -69,7 +72,7 @@ async function updateProductDetail(req, res) {
         querySnippet += fieldsToUpdate.join(', ') + ' WHERE id = $' + (fieldsToUpdate.length + 1);
         params.push(parseInt(productColorId));
         const result = await employeePool.query(querySnippet, params)
-        res.status(200).send({ succes: "Product updated successfully" });
+        res.status(200).send({ success: "Product updated successfully" });
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
@@ -90,11 +93,29 @@ async function updateProductImage(req, res) {
 
         const firebaseUrl = await uploadPhotoToFirebase(file, product_detail_id, index)
         await employeePool.query("UPDATE product_images SET image_url=$1 WHERE id=$2", [firebaseUrl.url, imageId])
-        res.status(200).send({ succes: "Product updated successfully" });
+        res.status(200).send({ success: "Product updated successfully" });
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
 }
 
+async function updatePasswordEmployee (req, res) {
+    try {
+        const {username, password, confirmPassword}=req.body
+        if(!username){return res.status(400).send({error:"No user provided"})}
+        if(!password){ return res.status(400).send({error:"No password provided"})}
+        if (!confirmPassword) { return res.status(400).send({ error: "No confirm password provided" }) }
+        if(password!==confirmPassword){return res.status(400).send({error:"Password doesnt match"})}
+        const hashedUsername = hashData(username)
+        const checkedUsername= await employeePool.query("SELECT id from employee_user where username=$1", [hashedUsername])
+        const idForUsername=checkedUsername.rows[0].id
+        if(!idForUsername){throw new Error ("No id found for this username")}
+        const hashedPassword=await hashPassword(password)
+        await employeePool.query("UPDATE employee_user SET password=$1 where id=$2", [hashedPassword, idForUsername])
+        res.status(200).send({success:"Password update succesfully"})
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }
+}
 
-module.exports = { updateProduct, updateProductDetail, updateProductImage }
+module.exports = { updateProduct, updateProductDetail, updateProductImage, updatePasswordEmployee }

@@ -17,7 +17,8 @@ const { addBrand,
 
 const { updateProduct,
     updateProductDetail,
-    updateProductImage
+    updateProductImage,
+    updatePasswordEmployee
 } = require('../controllers/employeeController/put.employee.controller');
 
 const {
@@ -63,6 +64,7 @@ employeeRouter.post('/addDetailForProduct/:id', upload.array('photos', 6), addDe
 employeeRouter.put('/updateProduct/:id', updateProduct)
 employeeRouter.put('/updateProductDetail/:id', updateProductDetail)
 employeeRouter.put('/updateProductImage/:imageid', upload.single('photos'), updateProductImage)
+employeeRouter.put('/updatePasswordEmployee', updatePasswordEmployee)
 
 employeeRouter.delete('/deleteBrand/:brandId', deleteBrand)
 employeeRouter.delete('/deleteCategory/:categoryId', deleteCategory)
