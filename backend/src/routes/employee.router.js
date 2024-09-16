@@ -1,16 +1,18 @@
 const express = require('express');
 const multer = require('multer');
 const employeeRouter = express.Router()
+const verifyToken=require('../customFunction/verifyToken')
 const jwt = require('jsonwebtoken');
+
 require('dotenv').config()
+
 const { addBrand,
     addCategory,
     addProduct,
     addSubCategory,
     addImageForProductDetail,
     addDetailForProduct,
-    logInUser,
-    verifyToken
+    logInUser
  } = require('../controllers/employeeController/post.employee.controller')
 
 const { updateProduct,
@@ -29,8 +31,7 @@ const {
 
 const { getCategoriesAndSubcategory,
     getBrands,
-    getAllDetailsByProductid,
-
+    getAllDetailsByProductid
 } = require('../controllers/employeeController/get.employee.controller')
 
 
@@ -40,15 +41,12 @@ const { getDistinctProducts,
 employeeRouter.post('/logInUser', logInUser)
 
 employeeRouter.use((req, res, next) => {
-    // const authHeader = req.headers['authorization']
-    // const token = authHeader && authHeader.split(' ')[1];
-
-    // if (token == null) return res.sendStatus(401);
-
-    // jwt.verify(token, process.env.JWT_TOKER_KEY, (err, user) => {
-    //     if (err) return res.status(401).send({error:err});
-    // });
-    next();
+    const token = req.cookies.token;
+    if (token == null) return res.status(401).send({ error: "Not authenticated" });
+    jwt.verify(token, process.env.JWT_TOKEN_KEY, (err, user) => {
+        if (err) return res.sendStatus(403);
+        next();
+    });
 })
 
 //Store locally the file
@@ -64,7 +62,7 @@ employeeRouter.post('/addDetailForProduct/:id', upload.array('photos', 6), addDe
 
 employeeRouter.put('/updateProduct/:id', updateProduct)
 employeeRouter.put('/updateProductDetail/:id', updateProductDetail)
-employeeRouter.put('/updateProductImage/:imageid/productdetail/:productdetailid', upload.single('photos'), updateProductImage)
+employeeRouter.put('/updateProductImage/:imageid', upload.single('photos'), updateProductImage)
 
 employeeRouter.delete('/deleteBrand/:brandId', deleteBrand)
 employeeRouter.delete('/deleteCategory/:categoryId', deleteCategory)

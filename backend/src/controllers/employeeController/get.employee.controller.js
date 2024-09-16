@@ -1,6 +1,6 @@
-const {employeePool} =require('../../postgres.conexion')
+const { employeePool } = require('../../configAndConnection/postgres.conexion')
 
-async function getCategoriesAndSubcategory (req, res) {
+async function getCategoriesAndSubcategory(req, res) {
     try {
         //query for categories
         const queryCategoryAndSubcategory = await employeePool.query(`select cat.category_name as category, subcat.description as subcategory
@@ -28,8 +28,8 @@ async function getBrands(req, res) {
 
 async function getAllDetailsByProductid(req, res) {
     try {
-       const {productId}=req.params
-       if(!productId){return res.status(400).send({error:"No product id provided"})}
+        const { productId } = req.params
+        if (!productId) { return res.status(400).send({ error: "No product id provided" }) }
         const queryDetailAboutProduct = await employeePool.query(`select pr.id as product_id, pr.title as title, pr.description as description, prImg.image_url as image, 
 prDet.color as color, prDet.quantity as quantity, prDet.price as price, br.brand_name as brand,
             cat.category_name as category, subcat.description as subcategory, prDet.id as product_detail_id, prImg.id as product_image_id
@@ -40,24 +40,25 @@ inner join brands as br on pr.brand_id = br.id
 inner join categories as cat on pr.category_id = cat.id
 inner join category_description as subcat on pr.category_description_id = subcat.id
 where pr.id=$1`, [productId])
-        if(queryDetailAboutProduct.rows.length ===0 ){throw new Error ("No product found with this id")}
+        if (queryDetailAboutProduct.rows.length === 0) { throw new Error("No product found with this id") }
         res.status(200).send(queryDetailAboutProduct.rows)
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
 }
 
-async function getAllImageByProductDetail (req, res) {
+async function getAllImageByProductDetail(req, res) {
     try {
-       const {productDetailId}=req.params
-       if(!productDetailId){return res.status(400).send({error:"No product detail id provided"})}
+        const { productDetailId } = req.params
+        if (!productDetailId) { return res.status(400).send({ error: "No product detail id provided" }) }
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
 }
 
 
-module.exports = { getCategoriesAndSubcategory,
+module.exports = {
+    getCategoriesAndSubcategory,
     getBrands,
     getAllDetailsByProductid,
- }
+}

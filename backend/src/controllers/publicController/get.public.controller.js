@@ -1,4 +1,4 @@
-const { publicPool } = require('../../postgres.conexion')
+const { publicPool } = require('../../configAndConnection/postgres.conexion')
 
 async function getDistinctProducts(req, res) {
     try {
@@ -24,12 +24,12 @@ ORDER BY pr.id
     }
 }
 
-async function getDetailByProductid (req, res) {
+async function getDetailByProductid(req, res) {
     try {
         //Get product with all details about a product and image
-        const {productId}=req.params
-        if(!productId){return res.status(400).send({error:"Product id not found"})}
-        const queryProduct=await publicPool.query(``, [])
+        const { productId } = req.params
+        if (!productId) { return res.status(400).send({ error: "Product id not found" }) }
+        const queryProduct = await publicPool.query(``, [])
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
@@ -64,8 +64,8 @@ async function getCategories(req, res) {
 async function getSubCategoryByCategory(req, res) {
     try {
         //query for subcategory
-        const {category}=req.query
-        if (!category){return res.status(400).send({error:"No category found"})}
+        const { category } = req.query
+        if (!category) { return res.status(400).send({ error: "No category found" }) }
         const queryCategories = await publicPool.query(`select cat.category_name as category, subcat.description as subcategory
 from categories as cat
 inner join category_description as subcat on cat.id=subcat.categories_id
@@ -77,8 +77,9 @@ where cat.category_name = $1`, [])
     }
 }
 
-module.exports = { getDistinctProducts, 
-    getBrands, 
-    getCategories, 
+module.exports = {
+    getDistinctProducts,
+    getBrands,
+    getCategories,
     getSubCategoryByCategory,
- }
+}

@@ -1,4 +1,4 @@
-const { employeePool } = require('../../postgres.conexion');
+const { employeePool } = require('../../configAndConnection/postgres.conexion');
 const { uploadPhotoToFirebase } = require('../firebase.controller')
 const { capitalizeFirstLetter, checkCorrectPrice } = require('../../customFunction/customFunction')
 const { compareHashPassword } = require('../../customFunction/cryptPassword')
@@ -84,8 +84,8 @@ async function addProduct(req, res) {
             throw new Error({ error: "Error uploading one or more files" });
         }
         //Insert all images url in db but use Promise to wait for all of them to be inserted
-        await Promise.all(uploadResults.map( (result) =>
-             client.query("INSERT INTO product_images (product_detail_id, image_url, index) VALUES ($1, $2, $3)", [productDetailId, result.url, result.index])
+        await Promise.all(uploadResults.map((result) =>
+            client.query("INSERT INTO product_images (product_detail_id, image_url, index) VALUES ($1, $2, $3)", [productDetailId, result.url, result.index])
         ))
         //If no error occured commit query
         await client.query('COMMIT')
@@ -221,29 +221,29 @@ async function addDetailForProduct(req, res) {
         if (!price) { return res.status(400).send({ error: "No price was provided" }) }
         if (!quantity) { return res.status(400).send({ error: "No quantity was provided" }) }
         const checkPrice = checkCorrectPrice(price)
-        if(checkPrice.error) { return res.status(400).send({ error:"Price format incorect"})}
+        if (checkPrice.error) { return res.status(400).send({ error: "Price format incorect" }) }
         //verified id in db
-        if(req.files.length>7){return res.status(400).send({ error: "Too many images"})}
+        if (req.files.length > 7) { return res.status(400).send({ error: "Too many images" }) }
         const checkProductId = await employeePool.query("SELECT id FROM products WHERE id=$1", [productId])
         if (!checkProductId.rows[0].id) { throw new Error("No product with provided id was found") }
         const insertProductDetail = await employeePool.query("INSERT INTO product_detail(product_id, color, quantity, price) VALUES ($1, $2, $3, $4) returning id", [productId, capitalizeFirstLetter(color), quantity, price])
-        const productDetailId=insertProductDetail.rows[0].id
-        if (!productDetailId){throw new Error("Error occured inserting in product detail")}
+        const productDetailId = insertProductDetail.rows[0].id
+        if (!productDetailId) { throw new Error("Error occured inserting in product detail") }
         //Upload all images in firebase
-        const uploadPromises = req.files.map(async (file, index) => await uploadPhotoToFirebase(file, productDetailId, index));
+        const uploadPromises = req.files.map( (file, index) => uploadPhotoToFirebase(file, productDetailId, index));
         //Wait for all upload to complete
         const uploadResults = await Promise.all(uploadPromises);
 
         //Verified if some of the upload had errors
         const failedUploads = uploadResults.filter(result => result.error);
         if (failedUploads.length > 0) {
-            throw new Error( "Error uploading one or more files");
+            throw new Error("Error uploading one or more files");
         }
         //Insert all images url in db but use Promise to wait for all of them to be inserted
-        await Promise.all(uploadResults.map( (result) =>
+        await Promise.all(uploadResults.map((result) =>
             employeePool.query("INSERT INTO product_images (product_detail_id, image_url, index) VALUES ($1, $2, $3)", [productDetailId, result.url, result.index])
         ))
-         res.status(200).send({ succes: "Product specification inserted with succes" }) 
+        res.status(200).send({ succes: "Product specification inserted with succes" })
     }
     catch (error) {
         res.status(500).send({ error: error.message });
@@ -257,33 +257,25 @@ async function logInUser(req, res) {
         if (!password) { return res.status(400).send({ error: "No password provided" }) }
         const hashingUser = hashUser(username)
         const checkUser = await employeePool.query("Select id, username, password from employee_user where username=$1", [hashingUser])
-        if (!checkUser.rowCount === 0) { throw new Error("No such user in database") }
+        if (checkUser.rowCount === 0) { throw new Error("No such user in database") }
         const checkPassword = await compareHashPassword(password, checkUser.rows[0].password)
         if (checkPassword.error) { throw new Error(checkPassword.error) }
         const token = jwt.sign(
-            { user: username }, 
-            process.env.JWT_TOKER_KEY, 
-        {expiresIn:'1h'})
-        res.status(200).send({ succes: `${username}`, token:token })
-    } catch (error) {
-        res.status(500).send({ error: error.message });
-    }
-}
-
-async function verifyToken (req, res) {
-    try {
-        const authHeader = req.headers['authorization']
-        const token = authHeader && authHeader.split(' ')[1];
-        if (token == null) return res.sendStatus(401);
-
-        jwt.verify(token, process.env.JWT_TOKER_KEY, (err, user) => {
-            if (err) return res.sendStatus(403);
-            res.status(202).send({ username:user.user})
+            { user: username },
+            process.env.JWT_TOKEN_KEY,
+            { expiresIn: '1d' })
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: true,  
+            sameSite: 'strict', 
+            maxAge: 24 * 60 * 60 * 1000 
         });
+        res.status(200).send({ succes: `${username}`, token:token})
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
 }
+
 
 module.exports = {
     addBrand,
@@ -293,5 +285,4 @@ module.exports = {
     addImageForProductDetail,
     addDetailForProduct,
     logInUser,
-    verifyToken
 }

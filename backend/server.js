@@ -1,16 +1,21 @@
-const express = require('express')
-
-const adminRouter = require('./routes/admin.router')
-const employeeRouter=require('./routes/employee.router')
-const publicRouter = require('./routes/public.router')
+const fs=require('fs')
+const https = require('https')
+const cluster=require('cluster')
+const numCPUs = require('os').cpus().length;
 const PORT=8626;
+const app=require('./app')
 
-const app = express()
-app.use(express.json())
+if(cluster.isMaster){
+    for(let i=0; i<numCPUs; i++){
+        cluster.fork()
+    }
+}
+else {
+    https.createServer({
+            cert:fs.readFileSync('cert.pem'),
+            key:fs.readFileSync('key.pem')
+    }, app).listen(PORT, ()=>{
+        console.log(`Listening on ${PORT}`)
+    })
+}
 
-app.use('/admin', adminRouter)
-app.use('/employee', employeeRouter)
-app.use('/public', publicRouter)
-app.listen(PORT, ()=>{
-    console.log(`Listening on ${PORT}`)
-})

@@ -1,4 +1,4 @@
-const bucket = require('../config.firebase')
+const bucket = require('../configAndConnection/config.firebase')
 
 async function uploadPhotoToFirebase(file, productDetailId, index) {
     try {

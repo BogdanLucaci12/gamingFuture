@@ -1,4 +1,4 @@
-const { employeePool } = require('../../postgres.conexion')
+const { employeePool } = require('../../configAndConnection/postgres.conexion')
 const { capitalizeFirstLetter, checkCorrectPrice } = require('../../customFunction/customFunction');
 const { uploadPhotoToFirebase } = require('../firebase.controller');
 async function updateProduct(req, res) {
@@ -77,18 +77,17 @@ async function updateProductDetail(req, res) {
 
 async function updateProductImage(req, res) {
     try {
-        const imageId = req.params.imageid;
+        const {imageId} = req.params;
         const file = req.file
-        const productDetailId = req.params.productdetailid
-        if (!productDetailId) { throw new Error("Product detail id not provided"); }
+
         if (!file) {
-            throw new Error("No file was sent")
+           return res.status(400).send({ error: "File not provided"})
         }
+        if(!imageId) { return res.status(400).send({error: "Product image id not provided"})}
         //To not overload firebase check if imageid exist in database postgres
         const verifiedId = await employeePool.query("SELECT product_detail_id, index FROM product_images WHERE id=$1", [imageId])
         const { product_detail_id, index } = verifiedId.rows[0]
-        //Check if product_detail_id is the same as the one send it through params
-        if (!product_detail_id === productDetailId) { throw new Error("Product detail id doesnt match in database") }
+
         const firebaseUrl = await uploadPhotoToFirebase(file, product_detail_id, index)
         await employeePool.query("UPDATE product_images SET image_url=$1 WHERE id=$2", [firebaseUrl.url, imageId])
         res.status(200).send({ succes: "Product updated successfully" });

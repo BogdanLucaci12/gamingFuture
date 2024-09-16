@@ -1,4 +1,4 @@
-const { employeePool } = require('../../postgres.conexion')
+const { employeePool } = require('../../configAndConnection/postgres.conexion')
 const { deleteFile } = require('../firebase.controller')
 
 async function deleteBrand(req, res) {
@@ -105,15 +105,15 @@ async function deleteProduct(req, res) {
             inner join product_detail as prDet on pr.id=prDet.product_id
             inner join product_images as prImg on prImg.product_detail_id=prDet.id WHERE pr.id=$1`, [productId])
         //Map through the all rows    
-        const eraseFirebaseImages=queryIndexAndProductDetailId.rows.map(async (row) =>{
-            const {index, product_detail_id} = row
+        const eraseFirebaseImages = queryIndexAndProductDetailId.rows.map(async (row) => {
+            const { index, product_detail_id } = row
             await deleteFile(product_detail_id, index)
         })
         //Wait for all promise to be completed
         await Promise.all(eraseFirebaseImages)
         //Check through the array for any error
-        const checkForError=eraseFirebaseImages.filter(list=>list.error)
-        if(checkForError.error){throw new Error(checkForError.error)}
+        const checkForError = eraseFirebaseImages.filter(list => list.error)
+        if (checkForError.error) { throw new Error(checkForError.error) }
         await employeePool.query("DELETE from products WHERE id=$1", [productId])
         res.status(200).send({ succes: 'Product deleted successfully' })
     } catch (error) {
