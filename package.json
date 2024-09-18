@@ -6,7 +6,8 @@
   "scripts": {
     "test": "npm test --prefix backend",
     "server": "npm run watch --prefix backend",
-    "manage": "npm run dev --prefix managefrontenddb"
+    "manage": "npm run dev --prefix managefrontenddb",
+    "startall": "npm run server & npm run manage"
   },
   "author": "",
   "license": "ISC"

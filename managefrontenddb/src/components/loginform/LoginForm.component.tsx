@@ -2,16 +2,39 @@ import { LoginFormContainer } from "../container/CardContainer.styles";
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label";
+import { useRef, type FormEvent } from "react";
 
-const LoginForm = () => {
+export type FormType={
+    username:string,
+    password:string
+}
+
+type LoginFormProps={
+    submit:(data:FormType)=>void,
+    role:'Admin' | 'Employee',
+    disabled:boolean
+}
+
+const LoginForm = ({ submit, role, disabled }:LoginFormProps) => {
+    const form = useRef<HTMLFormElement>(null)
+    const handleSubmit = (e: FormEvent<HTMLFormElement>)=>{
+        e.preventDefault()
+        const formData = new FormData(e.currentTarget);
+        const data = Object.fromEntries(formData) as FormType;
+        submit(data)
+    }
     return (
         <LoginFormContainer>
-            <form action="">
+            <div className="flex justify-center">
+                <p className="text-xl font-bold">LogIn for {role}</p>
+            </div>
+            <form action="" onSubmit={handleSubmit} ref={form}>
                 <div className="p-3">
                     <Label htmlFor="username">Username</Label>
                     <Input
                         id="username"
                         type="text"
+                        name="username"
                         placeholder="Username"
                         autoComplete="off"
                     />
@@ -21,11 +44,14 @@ const LoginForm = () => {
                     <Input
                         id="password"
                         type="password"
+                        name="password"
                         placeholder="Password"
                     />
                 </div>
                 <div className="flex justify-end">
-                    <Button className="">Submit</Button>
+                    <Button 
+                    disabled={disabled}
+                    >Submit</Button>
                 </div>
             </form>
         </LoginFormContainer>

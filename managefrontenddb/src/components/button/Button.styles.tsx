@@ -23,3 +23,17 @@ color:white;
 }
 `
 
+export const OutlineButton=styled.div`
+border:1px solid white;
+padding:.3em;
+color:white;
+cursor:pointer;
+width:auto;
+border-radius:2em;
+
+&:hover{
+background-color:black;
+border:1px solid black;
+}
+`
+

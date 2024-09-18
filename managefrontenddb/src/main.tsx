@@ -4,13 +4,20 @@ import App from './App.tsx'
 import './index.css'
 import { ThemeProvider } from './components/ui/theme-provider.tsx'
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux'
+import { store } from './store/store.ts'
+import { RegenerateProvider } from './context/regenerate.context.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-    <App />
-    </ThemeProvider>
-    </BrowserRouter>
+    <Provider store={store}>
+      <RegenerateProvider>
+        <BrowserRouter>
+          <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+            <App />
+          </ThemeProvider>
+        </BrowserRouter>
+      </RegenerateProvider>
+    </Provider>
   </StrictMode>,
 )

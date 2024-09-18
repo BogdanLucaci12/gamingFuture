@@ -2,7 +2,7 @@
 const Home = () => {
   return (
     <div>
-      content
+      Acesta este cibtebt dub grtetre
     </div>
   );
 };
