@@ -6,13 +6,15 @@ export type Rank = 'Admin' | 'Employee' | ''
 type InitialState = {
     name: string,
     isAuthenticated: boolean,
-    rank: Rank
+    rank: Rank,
+    verifyToken:boolean
 }
 
 const initialState: InitialState = {
     name: "",
     isAuthenticated: false,
-    rank: ''
+    rank: '',
+    verifyToken:true
 }
 
 export const userSlice = createSlice({
@@ -21,11 +23,20 @@ export const userSlice = createSlice({
     reducers: {
         setCurrentUser(
             state,
-            action: PayloadAction<InitialState>
+            action: PayloadAction<{ name: string; isAuthenticated: boolean; rank: Rank }>
         ) {
-            return { ...state, ...action.payload }
+            const { name, isAuthenticated, rank } = action.payload;
+            state.name = name;
+            state.isAuthenticated = isAuthenticated;
+            state.rank = rank;
+        },
+        setVerifyToken(
+            state,
+            action:PayloadAction<boolean>
+        ){
+            state.verifyToken=action.payload
         }
     }
 })
 
-export const { setCurrentUser } = userSlice.actions
+export const { setCurrentUser, setVerifyToken } = userSlice.actions

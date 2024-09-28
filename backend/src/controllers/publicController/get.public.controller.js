@@ -3,9 +3,9 @@ const { publicPool } = require('../../configAndConnection/postgres.conexion')
 async function getDistinctProducts(req, res) {
     try {
         //Query db for all products but to be distinct
-        const queryProduct = await publicPool.query(`select distinct on (pr.id) pr.id as product_id, pr.title as title, pr.description as description, prImg.image_url as image, 
-prDet.color as color, prDet.quantity as quantity, prDet.price as price, br.brand_name as brand,
-            cat.category_name as category, subcat.description as subcategory
+        const queryProduct = await publicPool.query(`select distinct on (pr.id) pr.id as id,
+pr.title as title, prImg.image_url as image, br.brand_name as brand,
+cat.category_name as category, subcat.description as subcategory
 from products as pr 
 inner join product_detail as prDet on pr.id = prDet.product_id
 inner join product_images as prImg on prImg.product_detail_id = prDet.id
@@ -14,7 +14,7 @@ inner join categories as cat on pr.category_id = cat.id
 inner join category_description as subcat on pr.category_description_id = subcat.id
 ORDER BY pr.id
 `);
-        if (queryProduct.rows.length === 0) {
+        if (queryProduct.rowCount === 0) {
             throw new Error("No products found")
         }
         return res.status(200).send(queryProduct.rows)

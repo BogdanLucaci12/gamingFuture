@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const FlexibleContainer=styled.div`
+export const FlexibleContainer = styled.div`
     border:1px solid rgba(0,0,0,0.1);
     border-radius:1em;
     height:auto;
@@ -12,5 +12,13 @@ export const FlexibleContainer=styled.div`
 export const LoginFormContainer = styled(FlexibleContainer)`
     width:40%;
     align-self:center;
-   justify-self: center;
+    justify-self: center;
+    position:absolute;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+   @media(max-width:735px){
+   width:100%
+   }
 `

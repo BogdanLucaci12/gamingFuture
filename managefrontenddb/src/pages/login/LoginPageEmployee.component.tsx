@@ -3,10 +3,9 @@ import Login from "../../components/loginform/Login.component"
 const LoginPageEmployee = () => {
   return (
     <Login
-    url=""
+      url="http://localhost:8626/employee/logInUser"
     role="Employee"
     />
-
   );
 };
 

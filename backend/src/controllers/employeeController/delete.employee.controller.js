@@ -52,7 +52,7 @@ async function deleteSubCategory(req, res) {
 async function deleteImageForProductDetail(req, res) {
     try {
         const { imageId } = req.params
-        if (!imageId) { return res.status(400).send({ error: "Brand id not provided" }) }
+        if (!imageId) { return res.status(400).send({ error: "Image id not provided" }) }
         //Query the database for  with the same image id
         const queryProductImages = await employeePool.query("SELECT product_detail_id, index FROM product_images WHERE id=$1", [imageId])
         const productDetailId = queryProductImages.rows[0].product_detail_id
@@ -61,7 +61,7 @@ async function deleteImageForProductDetail(req, res) {
         if (deleteFromFirebase.error) { throw new Error(deleteFromFirebase.error) }
         if (deleteFromFirebase.success) {
             await employeePool.query("DELETE FROM product_images WHERE id=$1", [imageId])
-            res.status(200).send({ succes: `Image deleted successfully` })
+            res.status(200).send({ success: `Image deleted successfully` })
         }
     } catch (error) {
         res.status(500).send({ error: error.message });

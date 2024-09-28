@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const NavBarContainer=styled.div`
     height:3.5em;
     width:100%;
-    background-color:black;
+    background-color:rgba(0,0,0,.9);
     display:flex;
     flex-direction:row;
     justify-content:space-between;
@@ -58,7 +58,8 @@ display:flex;
 flex-direction: coulumn;
 gap:.6em;
 justify-content:center;
-align-items:center
+align-items:center;
+min-width:5em
 `
 
 export const AccountDropdownManu=styled.div`
@@ -67,6 +68,8 @@ background-color:rgba(0,0,0,.6);
 height:auto;
 top:3em;
 border-radius:1em;
+min-width:10em;
+right:.2em;
 
   &::before {
     content: '';

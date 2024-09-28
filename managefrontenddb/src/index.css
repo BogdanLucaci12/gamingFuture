@@ -4,12 +4,34 @@
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  
 }
+
 body {
   margin: 0;
   padding: 0;
 }
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: black white;
+  scroll-behavior: smooth;
+}
+::-webkit-scrollbar {
+  width: 12px;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background: white;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: black;
+  border-radius: 20px;
+  border: 3px solid white;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -37,8 +59,9 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
-  
+
   }
+
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
@@ -64,19 +87,20 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-  
+
   }
-  
+
 }
+
 @layer base {
   * {
     @apply border-border;
-  
+
   }
+
   body {
     @apply bg-background text-foreground;
-  
-  }
-  
-}
 
+  }
+
+}

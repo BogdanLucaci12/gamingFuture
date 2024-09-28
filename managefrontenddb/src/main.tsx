@@ -7,10 +7,11 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux'
 import { store } from './store/store.ts'
 import { RegenerateProvider } from './context/regenerate.context.tsx'
-
+import { OverlayProvider } from './context/activateOverlay.context.tsx'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
+      <OverlayProvider>
       <RegenerateProvider>
         <BrowserRouter>
           <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
@@ -18,6 +19,7 @@ createRoot(document.getElementById('root')!).render(
           </ThemeProvider>
         </BrowserRouter>
       </RegenerateProvider>
+      </OverlayProvider>
     </Provider>
   </StrictMode>,
 )

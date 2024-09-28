@@ -3,7 +3,7 @@ const { getDistinctProducts,
     getBrands,
     getCategories,
     getSubCategoryByCategory
-}=require('../controllers/publicController/get.public.controller')
+}=require('../../controllers/publicController/get.public.controller')
 
 const publicRouter=express.Router()
 

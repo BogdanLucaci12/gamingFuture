@@ -1,8 +1,8 @@
 import { LoginFormContainer } from "../container/CardContainer.styles";
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label";
 import { useRef, type FormEvent } from "react";
+import ButtonDisabled from "../button/ButtonDisabled.component";
 
 export type FormType={
     username:string,
@@ -49,9 +49,9 @@ const LoginForm = ({ submit, role, disabled }:LoginFormProps) => {
                     />
                 </div>
                 <div className="flex justify-end">
-                    <Button 
+                    <ButtonDisabled
                     disabled={disabled}
-                    >Submit</Button>
+                    >Log in</ButtonDisabled>
                 </div>
             </form>
         </LoginFormContainer>

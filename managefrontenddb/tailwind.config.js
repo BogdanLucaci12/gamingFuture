@@ -12,6 +12,11 @@ export default {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
+		  screens: {
+			  'max735': { 'max': '735px' },
+			  'max610': { 'max': '610px' },
+			  'max428': { 'max': '428px' },
+		  },
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -52,7 +57,8 @@ export default {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
-  			}
+  			},
+			
   		}
   	}
   },

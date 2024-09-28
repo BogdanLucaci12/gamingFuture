@@ -24,7 +24,7 @@ async function logInAdmin(req, res) {
                 user: name,
             rank:'Admin'
             },
-            process.env.JWT_TOKEN_KEY,
+            process.env.JWT_TOKEN_KEY_ADMIN,
             { expiresIn: '1d' })
         res.cookie('token', token, {
             maxAge: 30 *60 * 60 * 1000,

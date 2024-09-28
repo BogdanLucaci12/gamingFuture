@@ -1,18 +1,17 @@
 
 import { type FormEvent, useState, useRef } from "react";
-import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { AddUserFormContainer } from "./AddUserForm.styles";
 import { toast } from "react-toastify";
-import { IoGameControllerOutline } from "react-icons/io5";
 import { FaRegEyeSlash } from "react-icons/fa";
+import ButtonDisabled from "../button/ButtonDisabled.component";
 
 type AddUserFormType = {
-    url:string,
-    content:string,
-    refresh:boolean,
-    setRefresh:(value:boolean)=>void
+    url: string,
+    content: string,
+    refresh: boolean,
+    setRefresh: (value: boolean) => void
 }
 
 type FormAddUserType = {
@@ -25,16 +24,16 @@ type FormAddUserType = {
 const AddUserForm = ({ url, content, refresh, setRefresh }: AddUserFormType) => {
     const [disabled, setDisabled] = useState<boolean>(false)
     const [showPassword, setShowPassword] = useState<boolean>(false)
-    const form=useRef<HTMLFormElement>(null)
+    const form = useRef<HTMLFormElement>(null)
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setDisabled(true)
         const formData = new FormData(e.currentTarget)
         const data = Object.fromEntries(formData) as FormAddUserType
         const { username, password, name, confirmPassword } = data
-        if (!username) { 
-            setDisabled(false) 
-           return toast.warn("Please provide a username")
+        if (!username) {
+            setDisabled(false)
+            return toast.warn("Please provide a username")
         }
         if (!password) {
             setDisabled(false)
@@ -48,9 +47,10 @@ const AddUserForm = ({ url, content, refresh, setRefresh }: AddUserFormType) => 
             setDisabled(false)
             return toast.warn("Please provide a name")
         }
-        if (password !== confirmPassword){
+        if (password !== confirmPassword) {
             setDisabled(false)
-           return toast.warn("Password doesnt match")}
+            return toast.warn("Password doesnt match")
+        }
         const response = await fetch(url, {
             method: 'post',
             headers: {
@@ -80,59 +80,55 @@ const AddUserForm = ({ url, content, refresh, setRefresh }: AddUserFormType) => 
             <form action="" onSubmit={handleSubmit} ref={form}>
                 <div>
                     <Label htmlFor="username">Username</Label>
-                    <Input 
-                    placeholder="Username" 
-                    id={`username ${content}`} 
-                    name="username" 
-                    type="text" 
+                    <Input
+                        placeholder="Username"
+                        id={`username ${content}`}
+                        name="username"
+                        type="text"
                     />
                 </div>
                 <div>
                     <Label htmlFor="Password" className="flex gap-2">
-                        Password 
-                        <FaRegEyeSlash 
-                        className="cursor-pointer h-4 w-4"
-                            onClick={()=>setShowPassword(!showPassword)}
+                        Password
+                        <FaRegEyeSlash
+                            className="cursor-pointer h-4 w-4"
+                            onClick={() => setShowPassword(!showPassword)}
                         />
-                        </Label>
-                    <Input 
-                    placeholder="Password" 
-                    id={`Password ${content}`} 
-                    name="password" 
-                    type={`${showPassword ? `text` : 'password'}`}
-                     />
+                    </Label>
+                    <Input
+                        placeholder="Password"
+                        id={`Password ${content}`}
+                        name="password"
+                        type={`${showPassword ? `text` : 'password'}`}
+                    />
                 </div>
                 <div>
                     <Label htmlFor="Password" className="flex gap-2">
-                        Confirm Password 
-                        <FaRegEyeSlash 
-                        className="cursor-pointer h-4 w-4" 
-                        onClick={() => setShowPassword(!showPassword)}
+                        Confirm Password
+                        <FaRegEyeSlash
+                            className="cursor-pointer h-4 w-4"
+                            onClick={() => setShowPassword(!showPassword)}
                         />
-                        </Label>
-                    <Input 
-                    placeholder="Confirm password" 
-                    id={`Confirm password ${content}`} 
-                    name="confirmPassword" 
-                    type={`${showPassword ? `text` : 'password'}`} 
+                    </Label>
+                    <Input
+                        placeholder="Confirm password"
+                        id={`Confirm password ${content}`}
+                        name="confirmPassword"
+                        type={`${showPassword ? `text` : 'password'}`}
                     />
                 </div>
                 <div>
                     <Label htmlFor="Name">Name</Label>
-                    <Input 
-                    placeholder="Name" 
-                    id={`Name ${content}`} 
-                    name="name" 
-                    type="text" 
+                    <Input
+                        placeholder="Name"
+                        id={`Name ${content}`}
+                        name="name"
+                        type="text"
                     />
                 </div>
-                <Button
+                <ButtonDisabled
                     disabled={disabled}>
-                    {
-                        disabled &&
-                        <IoGameControllerOutline className="mr-2 h-6 w-6 animate-spin"/>
-                    }
-                    Add new {content} user</Button>
+                    Add new {content} user</ButtonDisabled>
             </form>
         </AddUserFormContainer>
     );
