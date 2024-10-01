@@ -1,4 +1,6 @@
 const jwt = require('jsonwebtoken');
+const { employeePool, adminPool } = require('../configAndConnection/postgres.conexion');
+
 require('dotenv').config()
 
 function verifyTokenAdmin(req, res) {
@@ -16,6 +18,7 @@ function verifyTokenAdmin(req, res) {
 
 function verifyTokenEmployee(req, res) {
         const token = req.cookies.token;
+
         if (token == null) return res.status(401).send({ error: "Not authenticated" });
         try {
            const decodedjwt= jwt.verify(token, process.env.JWT_TOKEN_KEY_EMPLOYEE);
@@ -30,5 +33,15 @@ function verifyTokenEmployee(req, res) {
         }
     }
 
-
-module.exports = { verifyTokenAdmin, verifyTokenEmployee }
+async function verifyTokenInDb(req, res){
+    const {token}=req.cookies
+    const result = await adminPool.query('SELECT * FROM blacklisted_token WHERE token = $1', [token]);
+    if (result.rowCount > 0) {
+        return res.status(401).json({ error: 'Token invalid' });
+    }
+}
+module.exports = { 
+    verifyTokenAdmin, 
+    verifyTokenEmployee,
+    verifyTokenInDb
+ }

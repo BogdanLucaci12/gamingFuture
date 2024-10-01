@@ -1,37 +1,47 @@
 
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
 import ButtonDisabled from "../button/ButtonDisabled.component";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { toast } from "react-toastify";
 import { useSelectored } from "@/store/hooks";
+import { RegenerateContext } from "@/context/regenerate.context";
 
 type AddImageProps={
-    imagesArrayLenght:number
+    imagesArrayLength:number
 }
 
-const AddImage = ({imagesArrayLenght}:AddImageProps) => {
+const AddImageForChangeProduct = ({ imagesArrayLength }:AddImageProps) => {
 
     const [sendimages, setSendImages] = useState<File[]>([]);
     const [disabled, setDisabled] = useState<boolean>(false)
     const [maxNumberOfPhotos, setMaxNumberOfPhoto]=useState<boolean>(false)
     const [acceptedNumberOfPhoto, setAcceptedNumberOfPhoto]=useState<number>(0)
     const { productDetailId }=useSelectored(state=>state.changeProduct)
+    const { setRefreshImageDetail, refreshImageDetail }=useContext(RegenerateContext)
+
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         //store new inserted images by user in images array for sending to backend
         if (event.target.files) {
-            setSendImages(Array.from(event.target.files));
+            const newFiles = Array.from(event.target.files);
+            setSendImages((prevImages) => [...prevImages, ...newFiles]);
         }
     }
 
-    useEffect(()=>{
-        sendimages.length + imagesArrayLenght > 6 ? setMaxNumberOfPhoto(true) : setMaxNumberOfPhoto(false);
-        setAcceptedNumberOfPhoto(6 - sendimages.length + imagesArrayLenght)
-    }, [sendimages])
+    useEffect(() => {
+        if (sendimages.length + imagesArrayLength >= 6) {
+            setMaxNumberOfPhoto(true);
+        } else {
+            setMaxNumberOfPhoto(false);
+            setAcceptedNumberOfPhoto(6 - sendimages.length - imagesArrayLength);
+        }
+    }, [imagesArrayLength, sendimages]);
 
+    
 const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setDisabled(true)
+
     const formData = new FormData();
     sendimages.forEach((image) => {
         formData.append("photos", image); 
@@ -46,8 +56,9 @@ const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     if (dataResponse.success) {
         toast.success(dataResponse.success)
     }
+    setRefreshImageDetail(!refreshImageDetail)
+    setSendImages([])
     setDisabled(false)
-
 };
 
 
@@ -56,7 +67,7 @@ return (
         onSubmit={handleSubmit}
         className="flex flex-col gap-2"
     >
-        {imagesArrayLenght <=6 ? 
+        {imagesArrayLength <=6 ? 
         
         <>
         {
@@ -78,7 +89,7 @@ return (
         }
         <ButtonDisabled
             disabled={disabled}
-            className=""
+            className="w-[14em]"
         >
             Submit new image
         </ButtonDisabled>
@@ -90,4 +101,4 @@ return (
 );
 };
 
-export default AddImage;
+export default AddImageForChangeProduct;

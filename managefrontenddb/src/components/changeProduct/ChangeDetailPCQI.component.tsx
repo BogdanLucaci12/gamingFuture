@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { ChangeDetailPCQIContainer, ChangePCQ } from "./Change.styles";
 import ChangeDetailSubmit from "./ChangeDetailSubmitPCQ.component";
 import { useSelectored } from "@/store/hooks";
-import ImageHandler from "../productDetails/ImageHandlerForChange.component";
+import ImageHandler from "../productDetails/ImageHandler.component";
+import { toast } from "react-toastify";
 
 
 type DetailType = {
@@ -13,7 +14,7 @@ type DetailType = {
 
 export type ImageType = {
     imageid: number,
-    imageUrl: string
+    imageurl: string
 }
 
 const ChangeDetailPCQI = () => {
@@ -35,10 +36,11 @@ const ChangeDetailPCQI = () => {
                 credentials: 'include'
             })
             const data = await response.json()
-            setDetails(data)
+            if(data.error) return toast.error(data.error)
+            setDetails(data[0])
         }
         fetchPCQ()
-    }, [])
+    }, [productDetailId])
 
     return (
         <ChangeDetailPCQIContainer>

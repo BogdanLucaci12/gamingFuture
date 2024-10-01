@@ -88,7 +88,7 @@ async function deleteProductDetail(req, res) {
         const checkForError = eraseFirebaseImages.filter(list => list.error)
         if (checkForError.error) { throw new Error(checkForError.error) }
         await employeePool.query("DELETE from product_detail WHERE id=$1", [productDetailId])
-        res.status(200).send({ succes: 'Product detail deleted successfully' })
+        res.status(200).send({ success: 'Product detail deleted successfully' })
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
@@ -115,7 +115,7 @@ async function deleteProduct(req, res) {
         const checkForError = eraseFirebaseImages.filter(list => list.error)
         if (checkForError.error) { throw new Error(checkForError.error) }
         await employeePool.query("DELETE from products WHERE id=$1", [productId])
-        res.status(200).send({ succes: 'Product deleted successfully' })
+        res.status(200).send({ success: 'Product deleted successfully' })
     } catch (error) {
         res.status(500).send({ error: error.message });
     }

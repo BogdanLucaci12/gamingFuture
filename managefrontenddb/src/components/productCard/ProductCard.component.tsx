@@ -1,10 +1,19 @@
 import { ProductType } from "@/pages/home/Home.page";
 import { ProductCardContainer } from "./ProductCard.styles";
 import { Button } from "../ui/button";
-
+import { useDispatcher } from "@/store/hooks";
+import { setProductId } from "@/store/changeProductSlice";
+import { useNavigate } from "react-router-dom";
 type ProductCardProps = ProductType
 
 const ProductCard = ({ image, title, category, subcategory, id, brand }: ProductCardProps) => {
+    const dispatch=useDispatcher()  
+    const navigate=useNavigate()
+    const handleClickOnProduct = ()=>{
+        dispatch(setProductId(id))
+        navigate("/changeProduct")
+    }
+
     return (
         <ProductCardContainer>
             <div className="w-full flex justify-center">
@@ -27,7 +36,9 @@ const ProductCard = ({ image, title, category, subcategory, id, brand }: Product
                     <p> <b>Product id: </b>
                         {id}</p>
                 </div>
-                <div className="flex w-full justify-center">
+                <div className="flex w-full justify-center"
+                onClick={handleClickOnProduct}
+                >
                     <Button
                         className="max428:h-5"
                     >

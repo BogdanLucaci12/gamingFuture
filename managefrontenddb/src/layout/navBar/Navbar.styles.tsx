@@ -70,7 +70,7 @@ top:3em;
 border-radius:1em;
 min-width:10em;
 right:.2em;
-
+z-index:10;
   &::before {
     content: '';
     position: absolute;

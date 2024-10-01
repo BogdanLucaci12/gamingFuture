@@ -74,7 +74,7 @@ const ChangeBrandCategory = ({ brand, category, subcategory, productId }: Change
                     <b>  Brand:</b> {brand}
                 </p>
             </div>
-            <div>
+            <div className='flex flex-col gap-3'>
                 <div className="flex gap-5 max428:flex-col">
                     <SelectCategory
                         sendCategory={handleSelectedCategory}
@@ -84,16 +84,12 @@ const ChangeBrandCategory = ({ brand, category, subcategory, productId }: Change
                         sendBrand={handleSelectedBrand}
                     />
                 </div>
-                <div
-                    className='mt-4'
-                    onClick={handleClick}>
                     <ButtonDisabled
                         disabled={disabled}
-
+                    className='w-[13em]'
                     >
                         Submit new changes
                     </ButtonDisabled>
-                </div>
             </div>
         </ChangeBrandCategoryContainer>
     );

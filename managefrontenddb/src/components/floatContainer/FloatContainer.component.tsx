@@ -65,7 +65,7 @@ return (
         <FloatPanelContainer>
             <IoMdClose 
             onClick={handleClose} 
-            className="absolute right-0 m-1 w-7 h-7 cursor-pointer hover:animate-spin"
+                className="absolute right-0 m-1 w-7 h-7 hover:rotate-180 hover:ease-in-out cursor-pointer duration-500"
             />
             <div className="text-center border-b-4">Delete a user from {content}</div>
             <div>To delete {name} with id= {id}, please provide their username.</div>

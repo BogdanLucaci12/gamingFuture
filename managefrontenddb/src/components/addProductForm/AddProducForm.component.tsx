@@ -1,4 +1,4 @@
-import { FormEvent, useState, useRef, useEffect } from "react";
+import { FormEvent, useState, useRef, useEffect, ChangeEvent } from "react";
 import { Label } from "../ui/label";
 import { AddProductFormContainer } from "./AddProductForm.styles";
 import { Textarea } from "../ui/textarea";
@@ -9,28 +9,31 @@ import { toast } from "react-toastify";
 
 
 
-export type QueryParamsType={
-    title:string,
-    color:string,
-    price:number,
-    quantity:number,
-    photos:File[],
-    description:string
+export type QueryParamsType = {
+    title: string,
+    color: string,
+    price: number,
+    quantity: number,
+    photos: File[],
+    description: string
 }
 
-type AddProducFormType={
-    submit: (formData:QueryParamsType)=>void
-    disabledButton:boolean,
-    clearForm:boolean
+type AddProducFormType = {
+    submit: (formData: QueryParamsType) => void
+    disabledButton: boolean,
+    clearForm: boolean
 }
 
 
-const AddProductForm = ({ submit, disabledButton, clearForm }:AddProducFormType) => {
+const AddProductForm = ({ submit, disabledButton, clearForm }: AddProducFormType) => {
+    const [sendimages, setSendImages] = useState<File[]>([]);
     const [title, setTitle] = useState<string>('')
     const [disabled, setDisabled] = useState<boolean>(false)
     const [description, setDescription] = useState<string>('');
+    const [maxNumberOfPhotos, setMaxNumberOfPhoto] = useState<boolean>(false)
+    const [acceptedNumberOfPhoto, setAcceptedNumberOfPhoto] = useState<number>(0)
 
-    const formRef=useRef<HTMLFormElement>(null)
+    const formRef = useRef<HTMLFormElement>(null)
 
     const handleChange = (event: FormEvent<HTMLTextAreaElement>) => {
         const newValue = event.currentTarget.value;
@@ -39,15 +42,32 @@ const AddProductForm = ({ submit, disabledButton, clearForm }:AddProducFormType)
         }
     };
 
-    const handleSubmit=(event:FormEvent<HTMLFormElement>)=>{
-        event.preventDefault()
-        const data=new FormData(event.currentTarget)
-        const photos = data.getAll('photos') as File[]
-        if(photos.length > 7){
-            setDisabled(true)
-           return toast.warn("No more then 6 pictures")
+    useEffect(() => {
+        if (sendimages.length >= 6) {
+            setMaxNumberOfPhoto(true);
+        } else {
+            setMaxNumberOfPhoto(false);
+            setAcceptedNumberOfPhoto(6 - sendimages.length);
         }
-        if (photos.length ===0) {
+    }, [sendimages]);
+
+    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+        //store new inserted images by user in images array for sending to backend
+        if (event.target.files) {
+            const newFiles = Array.from(event.target.files);
+            setSendImages((prevImages) => [...prevImages, ...newFiles]);
+        }
+    }
+
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        const data = new FormData(event.currentTarget)
+        const photos = sendimages
+        if (photos.length > 7) {
+            setDisabled(true)
+            return toast.warn("No more then 6 pictures")
+        }
+        if (photos.length === 0) {
             setDisabled(true)
             return toast.warn("At least 1 picture must be atach")
         }
@@ -60,7 +80,7 @@ const AddProductForm = ({ submit, disabledButton, clearForm }:AddProducFormType)
             photos,
             description
         };
-        if(!formData.title) {
+        if (!formData.title) {
             setDisabled(false)
             return toast.warn("You must specify  a title")
         }
@@ -79,17 +99,17 @@ const AddProductForm = ({ submit, disabledButton, clearForm }:AddProducFormType)
         submit(formData)
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         formRef.current?.reset()
     }, [clearForm])
-    useEffect(()=>{
+    useEffect(() => {
         setDisabled(disabledButton)
     }, [disabledButton])
     return (
         <AddProductFormContainer>
             <form
-            onSubmit={handleSubmit}
-            ref={formRef}
+                onSubmit={handleSubmit}
+                ref={formRef}
             >
                 <div>
                     <Label>Title</Label>
@@ -105,53 +125,58 @@ const AddProductForm = ({ submit, disabledButton, clearForm }:AddProducFormType)
                     <div className="w-1/3">
                         <Label htmlFor="color">Color</Label>
                         <Input
-                        id="color"
-                        name="color"
-                        placeholder="Color"
+                            id="color"
+                            name="color"
+                            placeholder="Color"
                         />
                     </div>
                     <div className="w-1/3">
                         <Label htmlFor="price">Price (RON)</Label>
                         <Input
-                        id="price"
-                        name="price"
-                        placeholder="Price"
-                         /></div>
+                            id="price"
+                            name="price"
+                            placeholder="Price"
+                        /></div>
                     <div className="w-1/3">
                         <Label htmlFor="quantity">Quantity</Label>
                         <Input
-                        id="quantity"
-                        name="quantity"
-                        placeholder="Quantity"
+                            id="quantity"
+                            name="quantity"
+                            placeholder="Quantity"
                         />
                     </div>
                 </div>
                 <div className="mt-6">
-                <p className="text-center text-xl mb-2">You can edit description of your product how you like</p>
-                <TextEditor
-                value=""
-                onChange={setDescription}
-                resetValue={clearForm}
-                
-                />
-                </div>
-                <div>
-                    <Label htmlFor="photos">Pictures (No more then 6)</Label>
-                    <Input 
-                    id="photos" 
-                    name="photos"
-                    type="file" 
-                    accept="image/*"
-                    multiple
-                     
+                    <p className="text-center text-xl mb-2">You can edit description of your product how you like</p>
+                    <TextEditor
+                        value=""
+                        onChange={setDescription}
+                        resetValue={clearForm}
+
                     />
                 </div>
+                <div>
+                    <Label htmlFor="photos">Pictures (No more then {acceptedNumberOfPhoto})</Label>
+                    {
+                        maxNumberOfPhotos ? (<p>You have reached the max number of photos for a detail</p>) : (<>
+                            <Input
+                                id="photos"
+                                name="photos"
+                                type="file"
+                                accept="image/*"
+                                onChange={handleFileChange}
+                                multiple
+                            />
+                        </>) 
+                    }
+                </div>
                 <div className=" mb-5 mt-5 w-full justify-center flex">
-                <ButtonDisabled
+                    <ButtonDisabled
                         disabled={disabled}
-                >
-                    Add new product
-                </ButtonDisabled>
+                        className="w-[10em]"
+                    >
+                        Add new product
+                    </ButtonDisabled>
                 </div>
             </form>
         </AddProductFormContainer>

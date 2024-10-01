@@ -3,11 +3,12 @@ import { HomeContainer, ShowProduct } from "./Home.styles";
 import SearchByCategory from "@/components/searchInHome/SearchByCategory.component";
 import SearchByBrand from "@/components/searchInHome/SearchByBrand.component";
 import { Label } from "@/components/ui/label";
-import { useEffect, useState, type FormEvent } from "react";
+import { useContext, useEffect, useState, type FormEvent } from "react";
 import { toast } from "react-toastify";
 import ProductCard from "@/components/productCard/ProductCard.component";
 import ButtonDisabled from "@/components/button/ButtonDisabled.component";
 import { IoGameController } from "react-icons/io5";
+import { RegenerateContext } from "@/context/regenerate.context";
 
 export type ProductType={
 
@@ -16,13 +17,13 @@ export type ProductType={
   category: string,
   subcategory: string,
   brand: string,
-  id: string
+  id: number
 }
 
 const Home = () => {
     const [allProducts, setAllProducts]=useState<ProductType[]>([])
     const [disabledSearch, setDisabledSearch]=useState<boolean>(false)
-    
+    const {refreshProductsHome}=useContext(RegenerateContext)
   useEffect(()=>{
     //query db for all product
     const fetchProduct=async()=>{
@@ -38,7 +39,7 @@ const Home = () => {
       setAllProducts(dataResponse)
     }
     fetchProduct()
-  }, [])
+  }, [refreshProductsHome])
 
   const handleSearch = async ( event:FormEvent<HTMLFormElement>)=>{
     event.preventDefault()
@@ -81,6 +82,7 @@ const Home = () => {
         />
         <ButtonDisabled
         disabled={disabledSearch}
+        className=""
             >Search</ButtonDisabled>
         </div>
       </form>

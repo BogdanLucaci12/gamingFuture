@@ -8,7 +8,7 @@ type InitialState = {
 }
 
 const initialState: InitialState = {
-    productId: 34,
+    productId: 0,
     productDetailId: 0,
     clickedOnDetailContainer:false
 }

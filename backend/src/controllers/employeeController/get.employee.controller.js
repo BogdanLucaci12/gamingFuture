@@ -202,7 +202,7 @@ async function getProductDetails (req, res) {
     try {
         const {productId}=req.params
         if (!productId) return res.status(400).send({ error: "No product id sent" })
-        const queryProductDetail = await employeePool.query("SELECT id, color, quantity, price  from product_detail where product_id=$1", [productId])
+        const queryProductDetail = await employeePool.query("SELECT id, color, quantity, price  from product_detail where product_id=$1 order by id", [productId])
         if(queryProductDetail.rowCount===0) throw new Error("No product detail found")
         res.status(200).send(queryProductDetail.rows)    
     } catch (error) {

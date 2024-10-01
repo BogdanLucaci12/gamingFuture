@@ -2,9 +2,10 @@ import { toast } from "react-toastify";
 import { ChangeImageContainer, ImageContainer } from "../changeProduct/Change.styles";
 import { ImageType } from "../changeProduct/ChangeDetailPCQI.component";
 import { MdDeleteForever } from "react-icons/md";
-import { useEffect, useState } from "react";
-import AddImage from "./AddImage.component";
+import { useContext, useEffect, useState } from "react";
 import { useSelectored } from "@/store/hooks";
+import { RegenerateContext } from "@/context/regenerate.context";
+import AddImageForChangeProduct from "./AddImageForChangeProduct.component";
 
 
 
@@ -12,6 +13,7 @@ const ImageHandler = () => {
   const [disabled, setDisabled] = useState<boolean>(false)
   const [images, setImages] = useState<ImageType[]>([])
   const { productDetailId }=useSelectored(state=>state.changeProduct)
+  const { setRefreshImageDetail, refreshImageDetail }=useContext(RegenerateContext)
 
   useEffect(() => {
    const fetchImages=async()=>{
@@ -24,11 +26,11 @@ const ImageHandler = () => {
        credentials: 'include'
      })
      const statusResponse=await response.json()
-     if(statusResponse.error) toast.warn(statusResponse.error)
+     if(statusResponse.error) return toast.warn(statusResponse.error)
      setImages(statusResponse)
    }
    fetchImages()
-  }, [productDetailId])
+  }, [productDetailId, refreshImageDetail])
 
   const handleDeleteImage = async (value: number) => {
     //handle delete image
@@ -42,21 +44,21 @@ const ImageHandler = () => {
     })
     //wait for the response
     const dataResponse = await deleteResponse.json()
-    if (dataResponse.error) toast.error(dataResponse.error)
-    if (dataResponse.success) {
-      toast.success(dataResponse.success)
-    }
+    if (dataResponse.error) { 
+      setDisabled(false) 
+      return toast.error(dataResponse.error)}
+    setImages(dataResponse)
     setDisabled(false)
+    setRefreshImageDetail(!refreshImageDetail)
   }
-
   return (
     <ChangeImageContainer>
       <ImageContainer>
         {
           images.length ? 
             (
-              images.map(({ imageid, imageUrl }: ImageType) =>
-                <div key={imageid} className="relative w-[20em] h-[20em]">
+              images.map(({ imageid, imageurl }: ImageType) =>
+                <div key={imageid} className="relative flex">
                   {
                     !disabled &&
                     <MdDeleteForever
@@ -64,7 +66,7 @@ const ImageHandler = () => {
                       onClick={() => handleDeleteImage(imageid)}
                     />
                   }
-                  <img src={imageUrl}
+                  <img src={imageurl}
                     alt=""
                     key={imageid}
                   />
@@ -73,8 +75,8 @@ const ImageHandler = () => {
                 This product doesnt have any images
               </p>)}
       </ImageContainer>
-      <AddImage
-        imagesArrayLenght={images.length}
+      <AddImageForChangeProduct
+        imagesArrayLength={images.length}
       />
     </ChangeImageContainer>
   );

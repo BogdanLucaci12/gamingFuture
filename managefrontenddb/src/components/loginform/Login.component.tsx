@@ -4,7 +4,6 @@ import { DarkButton } from "@/components/button/Button.styles";
 import { FormType } from "@/components/loginform/LoginForm.component";
 import { useDispatcher, useSelectored } from "@/store/hooks";
 import { setCurrentUser, type Rank } from "@/store/userSlice";
-import Cookies from 'universal-cookie'
 import { LoginContainer } from "./login.styles";
 import { Link, useNavigate } from "react-router-dom";
 import {  useEffect, useState } from "react";
@@ -17,7 +16,6 @@ role:'Admin' | 'Employee'
 
 const Login = ({ url, role }: LoginProps) => {
     const dispatch = useDispatcher()
-    const cookies = new Cookies()
     const {verifyToken}=useSelectored(state=>state.user)
     const [disabled, setDisabled] = useState<boolean>(false)
     const navigate=useNavigate()
@@ -39,15 +37,9 @@ const Login = ({ url, role }: LoginProps) => {
         })
         const result = await reponse.json()
         if (result.success) {
-            const { rank, token, name } = result
+            const { rank, name } = result
             dispatch(setCurrentUser({ name, isAuthenticated: true, rank: rank as Rank }))
-            // const setCookieHeader = result.headers.get('set-cookie');
-            // if(!setCookieHeader){
-                // cookies.set('token', token, {
-                //     maxAge: 30 * 60 * 60 * 1000,
-                // })
-            // }
-            navigate("/changeProduct")
+            navigate("/home")
             toast.success("Welcome")
         }
         else{
@@ -59,9 +51,22 @@ const Login = ({ url, role }: LoginProps) => {
     return (
         <LoginContainer>
             <LoginForm submit={handleSubmit} role={role} disabled={disabled}/>
-            <DarkButton className="absolute self-end bottom-2 right-2" padding="0 3em">
-                {role === 'Admin' ? <b> <Link to="/loginEmployee">Employee</Link> </b> : <b><Link to="/loginAdmin">Admin</Link></b>}
-            </DarkButton>
+            
+                {role === 'Admin' ? 
+                    <Link to="/loginEmployee"> 
+                <DarkButton className="absolute self-end bottom-2 right-2" padding="0 3em">
+                    <b>Employee</b>
+                </DarkButton>
+                     </Link> 
+                : 
+                    <Link to="/loginAdmin">
+                <DarkButton className="absolute self-end bottom-2 right-2" padding="0 3em">
+                <b>
+                Admin
+                </b>
+                </DarkButton>
+                </Link>
+}
         </LoginContainer>
     );
 };

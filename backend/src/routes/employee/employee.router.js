@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const employeeRouter = express.Router()
-const { verifyTokenEmployee } = require('../../customFunction/verifyToken')
+const { verifyTokenEmployee, verifyTokenInDb } = require('../../customFunction/verifyToken')
 const jwt = require('jsonwebtoken');
 
 require('dotenv').config()
@@ -16,7 +16,7 @@ const { addBrand,
     logOut
 } = require('../../controllers/employeeController/post.employee.controller')
 
-const { 
+const {
     updateProductDetail,
     updateProductImage,
     updatePasswordEmployee,
@@ -49,19 +49,22 @@ const { getCategoriesAndSubcategory,
 
 
 const { getDistinctProducts,
-} = require('../../controllers/publicController/get.public.controller')
+} = require('../../controllers/publicController/get.public.controller');
 
 employeeRouter.post('/logInUser', logInUser)
 
 employeeRouter.use((req, res, next) => {
     const token = req.cookies.token;
     if (token == null) return res.status(401).send({ error: "Not authenticated" });
+    const tokenInvalid = verifyTokenInDb(req, res)
+    if (tokenInvalid.error) return res.status(502).send({ error: tokenInvalid.error })
+
     try {
         //check employee token
         jwt.verify(token, process.env.JWT_TOKEN_KEY_EMPLOYEE);
         return next();
     } catch (err) {
-            //check admin token
+        //check admin token
         try {
             jwt.verify(token, process.env.JWT_TOKEN_KEY_ADMIN);
             return next();
@@ -80,12 +83,12 @@ employeeRouter.post('/addCategory', addCategory)
 employeeRouter.post('/addProduct', upload.array('photos', 6), addProduct)
 employeeRouter.post('/addSubCategory', addSubCategory)
 employeeRouter.post('/addImageForProductDetail/:productDetailId', upload.array('photos', 6), addImageForProductDetail)
-employeeRouter.post('/addDetailForProduct/:id', upload.array('photos', 6), addDetailForProduct)
+employeeRouter.post('/addDetailForProduct/:productId', upload.array('photos', 6), addDetailForProduct)
 employeeRouter.post('/logOut', logOut)
 
 employeeRouter.put('/updateProductTitle/:productId', updateProductTitle)
 employeeRouter.put('/updatedescription/:productId', updateDescription)
-employeeRouter.put('/updateProductDetail/:id', updateProductDetail)
+employeeRouter.put('/updateProductDetail/:productDetailId', updateProductDetail)
 employeeRouter.put('/updateProductImage/:imageid', upload.single('photos'), updateProductImage)
 employeeRouter.put('/updatePasswordEmployee', updatePasswordEmployee)
 employeeRouter.put('/updateBrandCategorySubcategory/:productId', updateBrandCategorySubcategory)

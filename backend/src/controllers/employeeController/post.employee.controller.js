@@ -1,4 +1,4 @@
-const { employeePool } = require('../../configAndConnection/postgres.conexion');
+const { employeePool, adminPool } = require('../../configAndConnection/postgres.conexion');
 const { uploadPhotoToFirebase } = require('../firebase.controller')
 const { capitalizeFirstLetter } = require('../../customFunction/customFunction')
 const { compareHashPassword } = require('../../customFunction/cryptPassword')
@@ -192,7 +192,7 @@ async function addImageForProductDetail(req, res) {
 
 async function addDetailForProduct(req, res) {
     try {
-        const productId = req.params.id
+        const {productId} = req.params
         const { color, price, quantity } = req.body
         if (!req.files && !req.files.length === 0) { return res.status(400).send({ error: "No image provided" }) }
         if (!productId) { return res.status(400).send({ error: "No id was provided" }) }
@@ -221,7 +221,7 @@ async function addDetailForProduct(req, res) {
         await Promise.all(uploadResults.map((result) =>
             employeePool.query("INSERT INTO product_images (product_detail_id, image_url, index) VALUES ($1, $2, $3)", [productDetailId, result.url, result.index])
         ))
-        res.status(200).send({ succes: "Product specification inserted with succes" })
+        res.status(200).send({ success: "Product specification inserted with succes" })
     }
     catch (error) {
         res.status(500).send({ error: error.message });
@@ -260,10 +260,15 @@ async function logInUser(req, res) {
 
 async function logOut (req, res) {
     try {
+        const {token}= req.cookies
+        const decodedToken = jwt.decode(token)
+        const expiryDate = new Date(decodedToken.exp * 1000);
+        const resultQuery=await employeePool.query("insert into blacklisted_token (token, expiry_at) values ($1, $2) returning id", [token, expiryDate])
+        if(!resultQuery.rows[0].id) throw new Error("Log out fail")  
         res.cookie('token', '', {
             maxAge: 0
         });
-        res.status(200).json({ success: 'Logout successful' });
+        res.status(200).json({ error: 'Logout successfully' });
     } catch (error) {
         res.status(500).send({ error: error.message });
     }

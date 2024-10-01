@@ -34,8 +34,8 @@ async function updateDescription(req, res) {
 async function updateProductDetail(req, res) {
     let querySnippet
     try {
-        const {productColorId} = req.params;
-        if (!productColorId) return res.status(400).send({error:"No product detail id sent"})
+        const { productDetailId } = req.params;
+        if (!productDetailId) return res.status(400).send({error:"No product detail id sent"})
         const { color, quantity, price } = req.body
         //Define a dinamic query based of some situations
         //It should look like this UPDATE products SET title = $1, description = $2 WHERE product_id = $3
@@ -54,6 +54,7 @@ async function updateProductDetail(req, res) {
             params.push(quantity)
         }
         if (price) {
+            if(!Number(price)) return res.status(400).send({error:"Price is not in the correct format"})
             fieldsToUpdate.push('price = $' + (fieldsToUpdate.length + 1))
             params.push(Number(price))
         }
@@ -61,7 +62,7 @@ async function updateProductDetail(req, res) {
             return res.status(400).send({ error: "No fields to update" });
         }
         querySnippet += fieldsToUpdate.join(', ') + ' WHERE id = $' + (fieldsToUpdate.length + 1);
-        params.push(parseInt(productColorId));
+        params.push(parseInt(productDetailId));
         const result = await employeePool.query(querySnippet, params)
         res.status(200).send({ success: "Product updated successfully" });
     } catch (error) {

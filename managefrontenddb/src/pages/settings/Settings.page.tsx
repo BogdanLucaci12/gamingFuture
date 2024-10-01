@@ -77,6 +77,7 @@ const Settings = () => {
             id="username"
             type="text"
             placeholder="Username"
+            autoComplete="off"
             />
           </div>
           <div>
@@ -112,11 +113,12 @@ const Settings = () => {
               placeholder="Confirm new password"
             />
           </div>
-          <div className="mt-2">
+         
           <ButtonDisabled
               disabled={disabled}
+            className="mt-2 w-[15em]"
           >Submit</ButtonDisabled>
-          </div>
+       
         </form>
       </SettingsSubContainer>
 

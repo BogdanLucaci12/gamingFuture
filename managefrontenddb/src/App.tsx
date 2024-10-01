@@ -5,7 +5,6 @@ import LoginPageAdmin from "./pages/login/LoginPageAdmin.page.tsx";
 import ProtectedRouteEmployee from "./utils/ProtectedRouteEmployee.component";
 import { useSelectored, useDispatcher } from "./store/hooks";
 import { useEffect } from "react";
-import Cookies from 'universal-cookie'
 import { setCurrentUser, setVerifyToken } from "./store/userSlice";
 import LoginPageEmployee from "./pages/login/LoginPageEmployee.component.tsx";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +18,6 @@ import ChangeProduct from "./pages/changeProduct/ChangeProduct.page.tsx";
 const App = () => {
   
   const { isAuthenticated, rank } = useSelectored(state => state.user);
-  const cookies = new Cookies()
   const dispatch = useDispatcher()
   const navigate = useNavigate()
 
@@ -36,17 +34,13 @@ const App = () => {
       const data = await response.json()
       if (data.error) {
         toast.error("Please log in")
-        // const setCookieHeader = data.headers.get('set-cookie');
-        // if(!setCookieHeader){
-        // }
-        // cookies.set('token', '', { maxAge: 0 });
         navigate("/loginEmployee")
       }
       if (data.success) {
         const { name, rank } = data;
         console.log(data)
         dispatch(setCurrentUser({ name, isAuthenticated: true, rank }));
-        navigate("/changeProduct")
+        navigate("/home")
         toast.success("Welcome")
       }
       dispatch(setVerifyToken(false))

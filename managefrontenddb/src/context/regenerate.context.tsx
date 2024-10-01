@@ -11,8 +11,14 @@ type RegenerateContextType = {
     setRefreshBrandsTable: (value: boolean) => void,
     refreshProduct: boolean,
     setRefreshProduct: (value:boolean) => void,
-    refreshSpecificProductDetail:boolean,
-    setRefreshSpecificProductDetail:(value:boolean)=>void
+    refreshImageDetail:boolean,
+    setRefreshImageDetail:(value:boolean)=>void,
+    refreshPCQ:boolean,
+    setRefreshPCQ:(value:boolean)=>void,
+    refreshDetails: boolean,
+    setRefreshDetails: (value: boolean) => void,
+    refreshProductsHome:boolean,
+    setRefreshProductsHome:(value:boolean)=>void
 }
 
 export const RegenerateContext = createContext<RegenerateContextType>({
@@ -26,8 +32,14 @@ export const RegenerateContext = createContext<RegenerateContextType>({
     setRefreshBrandsTable: () => { },
     refreshProduct: false,
     setRefreshProduct: () => { },
-    refreshSpecificProductDetail: false,
-    setRefreshSpecificProductDetail: () => {}
+    refreshImageDetail: false,
+    setRefreshImageDetail: () => {},
+    refreshPCQ:false,
+    setRefreshPCQ:()=>{},
+    refreshDetails: false,
+    setRefreshDetails: () => { },
+    refreshProductsHome:false,
+    setRefreshProductsHome:()=>{}
 })
 
 type RegenerateProviderType = {
@@ -40,7 +52,11 @@ export const RegenerateProvider = ({ children }: RegenerateProviderType) => {
     const [refreshCategoriesTable, setRefreshCategoriesTable] = useState<boolean>(false)
     const [refreshBrandsTable, setRefreshBrandsTable] = useState<boolean>(false)
     const [refreshProduct, setRefreshProduct] = useState<boolean>(false)
-    const [refreshSpecificProductDetail, setRefreshSpecificProductDetail]=useState<boolean>(false)
+    const [refreshImageDetail, setRefreshImageDetail]=useState<boolean>(false)
+    const [refreshPCQ, setRefreshPCQ]=useState<boolean>(false)
+    const [refreshDetails, setRefreshDetails]=useState<boolean>(false)
+    const [refreshProductsHome, setRefreshProductsHome]=useState<boolean>(false)
+    
     const value = {
         refreshEmployeeTable,
         setRefreshEmployeeTable,
@@ -52,8 +68,14 @@ export const RegenerateProvider = ({ children }: RegenerateProviderType) => {
         setRefreshBrandsTable,
         refreshProduct,
         setRefreshProduct,
-        refreshSpecificProductDetail, 
-        setRefreshSpecificProductDetail
+        refreshImageDetail, 
+        setRefreshImageDetail,
+        refreshPCQ, 
+        setRefreshPCQ,
+        refreshDetails, 
+        setRefreshDetails,
+        refreshProductsHome, 
+        setRefreshProductsHome
     }
 
     return (

@@ -1,6 +1,7 @@
 import { DetailContainer } from "./ProductDetails.styles";
-import { useDispatcher } from "@/store/hooks";
+import { useDispatcher, useSelectored } from "@/store/hooks";
 import { setProductDetailId, setClickedOnDetailContainer } from "@/store/changeProductSlice";
+import { useEffect, useState } from "react";
 type DetailPropsType = {
   detailId: number,
   color: string,
@@ -9,17 +10,27 @@ type DetailPropsType = {
 }
 
 const Detail = ({ detailId, color, price, quantity }: DetailPropsType) => {
-  const dispatch = useDispatcher()
+  const [clicked, setClicked] = useState(false);
 
+  const dispatch = useDispatcher()
+  const { productDetailId }=useSelectored(state=>state.changeProduct)
   const handleClick = () => {
     dispatch(setProductDetailId(detailId))
     dispatch(setClickedOnDetailContainer(true))
-  }
+}
+
+  useEffect(()=>{
+productDetailId===detailId ? setClicked(true): setClicked(false)
+    
+  }, [productDetailId])
 
   return (
-    <DetailContainer onClick={handleClick}>
+    <DetailContainer
+     onClick={handleClick}
+     clicked={clicked}
+     >
       <p>
-        <b>Id: </b>
+        <b>Detail Id: </b>
         {detailId}
       </p>
       <p>
