@@ -3,7 +3,7 @@ import Login from "../../components/loginform/Login.component"
 const LoginPageEmployee = () => {
   return (
     <Login
-      url="http://localhost:8626/employee/logInUser"
+      url="https://gamingfuture-ff5d055f184c.herokuapp.com/employee/logInUser"
     role="Employee"
     />
   );

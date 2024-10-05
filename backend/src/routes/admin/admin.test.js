@@ -25,7 +25,6 @@ describe('Log in admin, add user employee and delete that', () => {
         token = tokenCookie;
         expect(response.body).toEqual({ success: "Successfully logged in", username: CREDENTIALS_ADMIN_USERNAME });
     })
-    console.log(token)
     test('Add admin account', async () => {
         await request(app)
             .post('/admin/addAdminAccount')

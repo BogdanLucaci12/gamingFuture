@@ -24,7 +24,6 @@ const ChangeDetailSubmitPCQ = ({ title, value, productDetailId }:ChangeDetailSub
       setDisabled(true)
       const dataForm=new FormData(event.currentTarget)
       const data=Object.fromEntries(dataForm)
-      console.log(data)
       const response = await fetch(`http://localhost:8626/employee/updateProductDetail/${productDetailId}`, {
         method: 'put',
         headers: {

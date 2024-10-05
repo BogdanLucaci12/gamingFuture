@@ -51,6 +51,7 @@ const LoginForm = ({ submit, role, disabled }:LoginFormProps) => {
                 <div className="flex justify-end">
                     <ButtonDisabled
                     disabled={disabled}
+                    className=""
                     >Log in</ButtonDisabled>
                 </div>
             </form>

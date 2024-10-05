@@ -71,7 +71,6 @@ async function getProductBySearch(req, res) {
     try {
         const searchParam = req.query.searchParam
         const searchPattern = `%${searchParam}%`;
-        console.log(searchParam)
         //Query db for all products but to be distinct
         const queryProduct = await employeePool.query(`SELECT DISTINCT ON (pr.id) 
   pr.id AS id,
@@ -168,7 +167,6 @@ ORDER BY pr.id;
 async function getProductByBrand(req, res) {
     try {
         const { brand, category ,subcategory } = req.query
-        console.log(brand, category, subcategory)
         //Query db for all products but to be distinct
         const queryProduct = await employeePool.query(`SELECT DISTINCT ON (pr.id) 
   pr.id AS id,

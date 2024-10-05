@@ -60,11 +60,9 @@ const NavBar = () => {
         const statusReponse = await response.json()
       
         if (statusReponse.error)  {
-            console.log("nu trimite la login page")
             toast.warn(statusReponse.error)
         }
         if (statusReponse.success) {
-            console.log("trimite la login page")
             dispatch(setCurrentUser({ name: '', isAuthenticated: false, rank: '' as Rank }))
             navigate("/loginEmployee")
             toast.success(statusReponse.success)

@@ -154,7 +154,6 @@ async function updatePasswordEmployee (req, res) {
          }
          querySnippet += fieldsToUpdate.join(', ') + ' WHERE id = $' + (fieldsToUpdate.length + 1);
          params.push(productId);
-         console.log(querySnippet, params, productId)
          const result = await employeePool.query(querySnippet, params)
          res.status(200).send({ success: "Product updated successfully" });
      } catch (error) {
