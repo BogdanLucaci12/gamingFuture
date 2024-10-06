@@ -34,7 +34,7 @@ const ChangeDescription = ({ description, productId }: ChangeDescriptionType) =>
     }
 
   return (
-      <div className="mt-4">
+      <div className="mt-8">
             <p className="text-lg text-center">
                 <b>
                 Product description
@@ -49,13 +49,17 @@ const ChangeDescription = ({ description, productId }: ChangeDescriptionType) =>
               onChange={value=>setTextEditor(value)}
               resetValue={false}
           />
-      
+            <div onClick={handleClick}
+            className="w-[15em]"
+            >
           <ButtonDisabled
           disabled={disabled}
-          className="w-[15em]"
+                  className="w-[15em] max735:mt-10"
+          
           >
             Submit new description
           </ButtonDisabled>
+            </div>
     
       </div>
   );

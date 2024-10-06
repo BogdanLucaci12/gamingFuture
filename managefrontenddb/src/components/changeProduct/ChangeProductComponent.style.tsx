@@ -6,8 +6,9 @@ flex-direction:row;
 gap:1.25rem;
 align-items:center;
 
-@media(max-width:540px){
+@media(max-width:732px){
 flex-direction:column;
+margin-top:1em
 }
 `
 

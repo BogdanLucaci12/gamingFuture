@@ -14,24 +14,24 @@ import { Rank, setCurrentUser } from "@/store/userSlice"
 import Overlay from "@/components/container/Overlay.component"
 import AddDetail from "@/components/productDetails/AddDetail.component"
 import DeleteProduct from "@/components/productDetails/DeleteProduct.component"
-
+import { IoGameControllerOutline } from "react-icons/io5";
 
 
 const NavBar = () => {
     const { name, rank } = useSelectored(state => state.user)
     const [showControlPanel, setShowControlPanel] = useState<boolean>(true)
     const [showAccountPanel, setShowAccountPanel] = useState<boolean>(false)
+    const [changeToastPosition, setChangeToastPosition]=useState<boolean>(false)
+    const [disabled, setDisabled]=useState<boolean>(false)
     const dispatch = useDispatcher()
     const navigate = useNavigate()
     const screenWidth = useWindowWidth()
     const bars = useRef<HTMLDivElement>(null)
-    const { activate, addDetail, confirmDeleteProduct }=useSelectored(state=>state.overlaySlice)
+    const { activate, addDetail, confirmDeleteProduct } = useSelectored(state => state.overlaySlice)
     useEffect(() => {
-        if (screenWidth >= 735) {
-            return setShowControlPanel(true)
-        } else {
-            setShowControlPanel(false)
-        }
+       screenWidth >= 735 ? setShowControlPanel(true) : setShowControlPanel(false)
+
+        screenWidth < 735 ? setChangeToastPosition(true) : setChangeToastPosition(false)
     }, [screenWidth])
 
     const handleMouseEnter = () => {
@@ -48,8 +48,8 @@ const NavBar = () => {
         if (screenWidth < 735) setShowControlPanel(false)
     }
 
-    const handleLogOut = async() => {
-        
+    const handleLogOut = async () => {
+        setDisabled(true)
         const response = await fetch('http://localhost:8626/employee/logOut', {
             method: 'post',
             headers: {
@@ -58,16 +58,13 @@ const NavBar = () => {
             credentials: 'include'
         })
         const statusReponse = await response.json()
-      
-        if (statusReponse.error)  {
-            toast.warn(statusReponse.error)
-        }
+        if (statusReponse.error) toast.warn(statusReponse.error)
         if (statusReponse.success) {
             dispatch(setCurrentUser({ name: '', isAuthenticated: false, rank: '' as Rank }))
             navigate("/loginEmployee")
             toast.success(statusReponse.success)
         }
-      
+        setDisabled(false)
     }
 
     return (
@@ -133,19 +130,31 @@ const NavBar = () => {
                                         Change password
                                     </Link>
                                 </OutlineButton>
+                                {
+                                    disabled ? 
+                                    <IoGameControllerOutline className="mr-2 h-6 w-6 animate-spin" /> 
+                                    :
                                 <OutlineButton onClick={handleLogOut}>
                                     Log out
                                 </OutlineButton>
+                                }
                             </div>
                         </AccountDropdownManu>
                     }
                 </AccountPanel>
             </NavBarContainer>
-            <ToastContainer theme="dark" />
+            {
+                changeToastPosition ? 
+                <ToastContainer 
+                        theme="dark"
+                position="bottom-center"/> 
+                :
+            <ToastContainer theme="dark"/>
+            }
             {
                 activate && <Overlay>
                     {
-                        addDetail && <AddDetail/>
+                        addDetail && <AddDetail />
                     }
                     {
                         confirmDeleteProduct && <DeleteProduct />

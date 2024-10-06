@@ -5,7 +5,7 @@ const LoginPageAdmin = () => {
 
     return (
        <Login
-            url="https://gamingfuture-ff5d055f184c.herokuapp.com/admin/loginAdmin"
+            url="http://localhost:8626/admin/loginAdmin"
             role='Admin'
        />
     );

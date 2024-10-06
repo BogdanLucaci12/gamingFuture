@@ -3,7 +3,7 @@ const { capitalizeFirstLetter } = require('../../customFunction/customFunction')
 const { uploadPhotoToFirebase } = require('../firebase.controller');
 const hashData =require('../../customFunction/cryptData')
 const { hashPassword, compareHashPassword }=require('../../customFunction/cryptPassword')
-
+// const {io}=require('../../../server')
 async function updateProductTitle(req, res) {
     try {
         const {productId} = req.params;
@@ -37,6 +37,7 @@ async function updateProductDetail(req, res) {
         const { productDetailId } = req.params;
         if (!productDetailId) return res.status(400).send({error:"No product detail id sent"})
         const { color, quantity, price } = req.body
+        
         //Define a dinamic query based of some situations
         //It should look like this UPDATE products SET title = $1, description = $2 WHERE product_id = $3
         querySnippet = 'UPDATE product_detail SET '
@@ -63,7 +64,9 @@ async function updateProductDetail(req, res) {
         }
         querySnippet += fieldsToUpdate.join(', ') + ' WHERE id = $' + (fieldsToUpdate.length + 1);
         params.push(parseInt(productDetailId));
-        const result = await employeePool.query(querySnippet, params)
+        await employeePool.query(querySnippet, params)
+        const io = req.app.get('io');
+        io.emit('updateQuantity');
         res.status(200).send({ success: "Product updated successfully" });
     } catch (error) {
         res.status(500).send({ error: error.message });
@@ -155,6 +158,7 @@ async function updatePasswordEmployee (req, res) {
          querySnippet += fieldsToUpdate.join(', ') + ' WHERE id = $' + (fieldsToUpdate.length + 1);
          params.push(productId);
          const result = await employeePool.query(querySnippet, params)
+
          res.status(200).send({ success: "Product updated successfully" });
      } catch (error) {
          res.status(500).send({ error: error.message });

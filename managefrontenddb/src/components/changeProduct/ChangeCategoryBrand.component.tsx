@@ -84,12 +84,16 @@ const ChangeBrandCategory = ({ brand, category, subcategory, productId }: Change
                         sendBrand={handleSelectedBrand}
                     />
                 </div>
+                <div className='w-[13em]'                
+                    onClick={handleClick}
+                >
                     <ButtonDisabled
                         disabled={disabled}
                     className='w-[13em]'
                     >
                         Submit new changes
                     </ButtonDisabled>
+                </div>
             </div>
         </ChangeBrandCategoryContainer>
     );

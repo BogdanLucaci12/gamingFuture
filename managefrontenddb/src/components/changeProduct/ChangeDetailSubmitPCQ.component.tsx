@@ -50,12 +50,12 @@ const ChangeDetailSubmitPCQ = ({ title, value, productDetailId }:ChangeDetailSub
         </div>
       <form 
       onSubmit={handleSubmit} 
-      className="flex flex-col gap-3"
+      className="flex flex-col gap-3 w-full"
       ref={form}
       >
             <Label>Insert new {title.toLowerCase()}</Label>
             <Input
-            className="w-[30em]"
+            className="w-full"
             placeholder={title}
             name={title.toLowerCase()}
             />

@@ -24,7 +24,7 @@ const App = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const response = await fetch('https://gamingfuture-ff5d055f184c.herokuapp.com/employee/verifyToken', {
+      const response = await fetch('http://localhost:8626/employee/verifyToken', {
         method: 'post',
         headers: {
           'Content-Type': 'application/json'

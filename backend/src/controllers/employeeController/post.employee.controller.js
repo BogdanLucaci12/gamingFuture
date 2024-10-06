@@ -268,7 +268,7 @@ async function logOut (req, res) {
         res.cookie('token', '', {
             maxAge: 0
         });
-        res.status(200).json({ error: 'Logout successfully' });
+        res.status(200).json({ success: 'Logout successfully' });
     } catch (error) {
         res.status(500).send({ error: error.message });
     }

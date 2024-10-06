@@ -20,8 +20,7 @@ const Detail = ({ detailId, color, price, quantity }: DetailPropsType) => {
 }
 
   useEffect(()=>{
-productDetailId===detailId ? setClicked(true): setClicked(false)
-    
+  productDetailId===detailId ? setClicked(true): setClicked(false)
   }, [productDetailId])
 
   return (

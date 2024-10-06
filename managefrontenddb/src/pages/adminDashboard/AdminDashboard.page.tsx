@@ -19,7 +19,7 @@ const AdminDashboard = () => {
           setRefresh={setRefreshEmployeeTable}
         />
         <RetrieveUsers
-          url="http://localhost:8626/admin/getEmployeeUSer"
+          url="http://localhost:8626/admin/getEmployeeUser"
           content="Employee"
           refresh={refreshEmployeeTable}
         />

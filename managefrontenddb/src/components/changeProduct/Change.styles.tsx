@@ -31,7 +31,7 @@ overflow:hidden;
 `
 
 export const ImageContainer=styled.div`
-overflow-x: scroll;
+overflow-x: auto;
 display:flex;
 gap:.6em;
 justify-content:flex-start;
@@ -39,11 +39,10 @@ flex-directtion:row;
 align-items:center;
 height:20em;
 white-space: nowrap;
-width:93vw;
+width:100%;
 
  img {
     flex-shrink:0;
-    width: ; 
     height:15.5em;
     max-width:none;
   }
@@ -51,12 +50,11 @@ width:93vw;
 
 export const ChangePCQ=styled.div`
 display:flex;
-justify-content:center;
+justify-content:space-evenly;
 width:100%;
 gap:1em;
 
 @media(max-width:732px){
-
 flex-direction:column
 }
 `

@@ -71,9 +71,11 @@ const RetrieveUsers = ({url, content, refresh}:AdminTableProps) => {
                    
                 </thead>
                 <tbody>
-                    {filteredUsers.map(user => (
+                    {
+                    filteredUsers.length &&
+                    filteredUsers.map((user, index) => (
                         <tr key={user.id}
-                            className={`text-center ${user.id % 2 === 0 ? 'bg-slate-200' : ''}`}
+                            className={`text-center ${index % 2 === 0 ? 'bg-slate-200' : ''}`}
                          >
                             <td>{user.id}</td>
                             <td>{user.name}</td>

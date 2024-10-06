@@ -58,7 +58,6 @@ employeeRouter.use((req, res, next) => {
     if (token == null) return res.status(401).send({ error: "Not authenticated" });
     const tokenInvalid = verifyTokenInDb(req, res)
     if (tokenInvalid.error) return res.status(502).send({ error: tokenInvalid.error })
-
     try {
         //check employee token
         jwt.verify(token, process.env.JWT_TOKEN_KEY_EMPLOYEE);

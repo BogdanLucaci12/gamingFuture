@@ -1,10 +1,13 @@
-import {  useEffect, useState } from "react";
+import {  useContext, useEffect, useState } from "react";
 import { ChangeDetailPCQIContainer, ChangePCQ } from "./Change.styles";
 import ChangeDetailSubmit from "./ChangeDetailSubmitPCQ.component";
 import { useSelectored } from "@/store/hooks";
 import ImageHandler from "../productDetails/ImageHandler.component";
 import { toast } from "react-toastify";
+import { io } from 'socket.io-client';
+import { RegenerateContext } from "@/context/regenerate.context";
 
+const socket = io('http://localhost:8626');
 
 type DetailType = {
     color: string,
@@ -24,7 +27,7 @@ const ChangeDetailPCQI = () => {
         price: 0,
         quantity: 0
     })
-
+    const { refreshPCQ, setRefreshPCQ }=useContext(RegenerateContext)
     useEffect(() => {
         const fetchPCQ = async () => {
             if(!productDetailId) return
@@ -40,7 +43,18 @@ const ChangeDetailPCQI = () => {
             setDetails(data[0])
         }
         fetchPCQ()
-    }, [productDetailId])
+
+    }, [productDetailId, refreshPCQ])
+
+    useEffect(()=>{
+        socket.on('updateQuantity', () => {
+            setRefreshPCQ(prev => !prev);
+        });
+
+        return () => {
+            socket.off('updateQuantity');
+        };
+    }, [])
 
     return (
         <ChangeDetailPCQIContainer>
@@ -60,7 +74,6 @@ const ChangeDetailPCQI = () => {
                     value={details.quantity}
                     productDetailId={productDetailId}
                 />
-
             </ChangePCQ>
             <ImageHandler/>
         </ChangeDetailPCQIContainer>

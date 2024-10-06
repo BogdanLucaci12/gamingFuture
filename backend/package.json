@@ -6,8 +6,7 @@
   "scripts": {
     "test": "jest",
     "server": "node server.js",
-    "watch": "nodemon server.js",
-    "start": "node server.js"
+    "watch": "nodemon server.js"
   },
   "engines": {
     "node": "20"
@@ -23,11 +22,11 @@
     "express": "^4.19.2",
     "firebase-admin": "^12.4.0",
     "helmet": "^7.1.0",
-    "https-proxy-agent": "^7.0.5",
     "jest-runner": "^29.7.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
-    "pg": "^8.12.0"
+    "pg": "^8.12.0",
+    "socket.io": "^4.8.0"
   },
   "devDependencies": {
     "jest": "^29.7.0",

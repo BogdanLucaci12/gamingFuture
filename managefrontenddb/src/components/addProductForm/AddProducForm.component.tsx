@@ -146,8 +146,8 @@ const AddProductForm = ({ submit, disabledButton, clearForm }: AddProducFormType
                         />
                     </div>
                 </div>
-                <div className="mt-6">
-                    <p className="text-center text-xl mb-2">You can edit description of your product how you like</p>
+                <div className="mt-5 mb-3">
+                    <p className="text-center text-xl mb-5">You can edit description of your product how you like</p>
                     <TextEditor
                         value=""
                         onChange={setDescription}

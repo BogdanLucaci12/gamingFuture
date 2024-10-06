@@ -71,7 +71,7 @@ const ChangePCQI = () => {
                         (<IoGameControllerOutline className="mr-2 h-6 w-6 animate-spin" />)
                 }
                 <div 
-                className="w-[12em] flex justify-center items-center border-4 border-black rounded-lg cursor-pointer"
+                    className="w-[12em] h-[7em] flex justify-center items-center shrink-0 border-4 border-black rounded-lg cursor-pointer"
                 onClick={handleClick}
                 >
                     <CiCirclePlus className="w-16 h-16 hover:scale-125 hover:ease-in-out duration-300"/>

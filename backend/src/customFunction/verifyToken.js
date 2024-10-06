@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { employeePool, adminPool } = require('../configAndConnection/postgres.conexion');
-
+const { adminPool } = require('../configAndConnection/postgres.conexion');
 require('dotenv').config()
 
 function verifyTokenAdmin(req, res) {

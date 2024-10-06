@@ -1,5 +1,5 @@
 import { ChangeProductContainer } from "./ChangeProduct.page.styles";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { IoGameControllerOutline } from "react-icons/io5";
 import ChangeTitle from "@/components/changeProduct/ChangeTitle.component";
 import ChangeBrandCategory from "@/components/changeProduct/ChangeCategoryBrand.component";
@@ -9,6 +9,7 @@ import { useSelectored } from "@/store/hooks";
 import { DarkButton } from "@/components/button/Button.styles";
 import { useDispatcher } from "@/store/hooks";
 import { setActive, setConfirmDeleteProduct } from "@/store/overlaySlice";
+import { RegenerateContext } from "@/context/regenerate.context";
 
 type ProductType = {
   title: string,
@@ -30,6 +31,7 @@ const ChangeProduct = () => {
   })
   const { title, description, brand, category, subcategory } = product
   const { productId } = useSelectored(state => state.changeProduct)
+  const {refreshProduct}=useContext(RegenerateContext)
   const dispatch=useDispatcher()
   useEffect(() => {
     //query product for title, description, brand, category, subcategory 
@@ -46,7 +48,7 @@ const ChangeProduct = () => {
       setProduct(data[0])
     }
     fetchProduct()
-  }, [productId])
+  }, [productId, refreshProduct])
 
   const handleDeleteProduct = ()=>{
     dispatch(setActive(true))

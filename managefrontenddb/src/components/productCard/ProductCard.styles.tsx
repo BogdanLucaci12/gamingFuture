@@ -18,18 +18,8 @@ font-size:.8em;
 
 @media(max-width:613px){
 width:45%;
-p{
-    font-size:.7em;
-}
-}
 
 
-@media(max-width:413px){
-
-p{
-font-size:.4em
-}
-}
 
 
 `

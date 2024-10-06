@@ -117,9 +117,9 @@ async function getAdminUser (req, res) {
         res.status(500).send({ error: error.message });
     }
 }
-async function getEmployeeUSer(req, res) {
+async function getEmployeeUser(req, res) {
     try {
-        const queryEmployeeTb = await adminPool.query("SELECT id, name from employee_user")
+        const queryEmployeeTb = await adminPool.query("SELECT id, name from employee_user order by id")
         const data = queryEmployeeTb.rows
         res.status(200).send(data)
     } catch (error) {
@@ -133,5 +133,5 @@ module.exports = {
      deleteUserEmployee, 
      deleteUserAdmin,
      getAdminUser,
-     getEmployeeUSer
+    getEmployeeUser
     }

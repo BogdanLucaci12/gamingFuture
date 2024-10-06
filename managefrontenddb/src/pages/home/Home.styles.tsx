@@ -18,5 +18,6 @@ height:full;
 
 @media(max-width:735px){ 
 justify-content:center;
+margin-bottom:5em
 }
 `

@@ -14,7 +14,7 @@ type RegenerateContextType = {
     refreshImageDetail:boolean,
     setRefreshImageDetail:(value:boolean)=>void,
     refreshPCQ:boolean,
-    setRefreshPCQ:(value:boolean)=>void,
+    setRefreshPCQ: React.Dispatch<React.SetStateAction<boolean>>;
     refreshDetails: boolean,
     setRefreshDetails: (value: boolean) => void,
     refreshProductsHome:boolean,
