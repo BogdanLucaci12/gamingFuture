@@ -10,3 +10,4 @@ Technology:
 3. Databases- PostgreSQL is used for storing data, while Firebase is used exclusively for images.
 
 Future purpose: The app is designed to handle a full e-commerce website in the future, with both employees and customers. An e-commerce website for customers will be launched, and employees will manage all products through a dedicated management page like the one created today.
+[![gamingFuture](https://img.youtube.com/vi/j_Sz7BW5uYg/0.jpg)](https://www.youtube.com/watch?v=j_Sz7BW5uYg)
