@@ -9,4 +9,4 @@ Technology:
             - database using bcrypt and crypto-js. For real-time communication between the frontend and backend, Socket.io is used. Tests are conducted using Jest and Supertest for API requests.
 3. Databases- PostgreSQL is used for storing data, while Firebase is used exclusively for images.
 
-   Future purpose: The app is designed to handle a full e-commerce website in the future, with both employees and customers. An e-commerce website for customers will be launched, and employees will manage all products through a dedicated management page like the one created today.
+Future purpose: The app is designed to handle a full e-commerce website in the future, with both employees and customers. An e-commerce website for customers will be launched, and employees will manage all products through a dedicated management page like the one created today.
