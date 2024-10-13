@@ -62,13 +62,14 @@ const AddProductForm = ({ submit, disabledButton, clearForm }: AddProducFormType
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const data = new FormData(event.currentTarget)
+        setDisabled(true)
         const photos = sendimages
         if (photos.length > 7) {
-            setDisabled(true)
+            setDisabled(false)
             return toast.warn("No more then 6 pictures")
         }
         if (photos.length === 0) {
-            setDisabled(true)
+            setDisabled(false)
             return toast.warn("At least 1 picture must be atach")
         }
 
@@ -96,6 +97,7 @@ const AddProductForm = ({ submit, disabledButton, clearForm }: AddProducFormType
             setDisabled(false)
             return toast.warn("You must specify  a quantity")
         }
+        setSendImages([])
         submit(formData)
     }
 
@@ -173,7 +175,7 @@ const AddProductForm = ({ submit, disabledButton, clearForm }: AddProducFormType
                 <div className=" mb-5 mt-5 w-full justify-center flex">
                     <ButtonDisabled
                         disabled={disabled}
-                        className="w-[10em]"
+                        className="w-[15em]"
                     >
                         Add new product
                     </ButtonDisabled>

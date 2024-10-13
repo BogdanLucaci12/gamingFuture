@@ -3,6 +3,7 @@ import ButtonDisabled from "../button/ButtonDisabled.component";
 import { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { RegenerateContext } from "@/context/regenerate.context";
+import { ChandeDescriptionContainer } from "./Change.styles";
 
 type ChangeDescriptionType={
     description:string,
@@ -34,34 +35,29 @@ const ChangeDescription = ({ description, productId }: ChangeDescriptionType) =>
     }
 
   return (
-      <div className="mt-8">
+      <ChandeDescriptionContainer>
             <p className="text-lg text-center">
-                <b>
+                <b className="border-b-4">
                 Product description
                 </b>
                 </p>
           <div 
           dangerouslySetInnerHTML={{ __html: description }} 
-          className="mb-3"
+          className="mb-3 w-full"
           />
           <TextEditor
               value={description}
               onChange={value=>setTextEditor(value)}
               resetValue={false}
           />
-            <div onClick={handleClick}
-            className="w-[15em]"
-            >
           <ButtonDisabled
           disabled={disabled}
-                  className="w-[15em] max735:mt-10"
-          
+          className="max735:mt-10"
+          onClick={handleClick}
           >
             Submit new description
           </ButtonDisabled>
-            </div>
-    
-      </div>
+      </ChandeDescriptionContainer>
   );
 };
 

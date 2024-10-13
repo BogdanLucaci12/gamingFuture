@@ -100,7 +100,7 @@ const FormWithOneInputAndSelect = ({ buttonContent, url, description, title, ref
                     </SelectContent>
                 </Select>
             </div>
-            <form action="" className="m-5 " onSubmit={handleSubmit}>
+            <form action="" className="m-5 " onSubmit={handleSubmit} ref={form}>
                 <div>
                     <Label htmlFor={description}>{title}</Label>
                     <Input
@@ -112,6 +112,7 @@ const FormWithOneInputAndSelect = ({ buttonContent, url, description, title, ref
                 <div className="mt-3">
                     <ButtonDisabled
                         disabled={disabled}
+                        className=""
                     >
                         {buttonContent}
                     </ButtonDisabled>

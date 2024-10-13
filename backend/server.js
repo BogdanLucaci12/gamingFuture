@@ -18,14 +18,14 @@ const socketServer = io(httpServer, {
 app.set('io', socketServer);
 
 
-// if(cluster.isMaster){
-//     for(let i=0; i<numCPUs; i++){
-//         cluster.fork()
-//     }
-// }
-// else {
+if(cluster.isMaster){
+    for(let i=0; i<numCPUs; i++){
+        cluster.fork()
+    }
+}
+else {
 httpServer.listen(PORT, () => {
     console.log(`Listening app on ${PORT}`)
 })
 sockets.listen(socketServer)
-// }
+}

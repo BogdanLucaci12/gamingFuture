@@ -82,7 +82,7 @@ const Home = () => {
         />
         <ButtonDisabled
         disabled={disabledSearch}
-        className=""
+        className="w-[9em]"
             >Search</ButtonDisabled>
         </div>
       </form>

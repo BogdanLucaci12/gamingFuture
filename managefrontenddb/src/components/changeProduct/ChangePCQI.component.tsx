@@ -8,6 +8,7 @@ import { CiCirclePlus } from "react-icons/ci";
 import { useDispatcher } from "@/store/hooks";
 import { setActive, setAddDetail } from "@/store/overlaySlice";
 import { RegenerateContext } from "@/context/regenerate.context";
+import { setClickedOnDetailContainer } from "@/store/changeProductSlice";
 
 
 export type DetailType = {
@@ -53,6 +54,10 @@ const ChangePCQI = () => {
         dispatch(setAddDetail(true))
     }
 
+    useEffect(()=>{
+        dispatch(setClickedOnDetailContainer(false))
+    },[productId])
+
     return (
         <ChangePCQIContainer>
             <ChangePCQIScrollContainer>
@@ -71,10 +76,10 @@ const ChangePCQI = () => {
                         (<IoGameControllerOutline className="mr-2 h-6 w-6 animate-spin" />)
                 }
                 <div 
-                    className="w-[12em] h-[7em] flex justify-center items-center shrink-0 border-4 border-black rounded-lg cursor-pointer"
+                    className="w-[12em] h-[7em] flex justify-center items-center shrink-0 border-4 border-black rounded-lg cursor-pointer max735:w-[11em] max735:text-[.7em]"
                 onClick={handleClick}
                 >
-                    <CiCirclePlus className="w-16 h-16 hover:scale-125 hover:ease-in-out duration-300"/>
+                    <CiCirclePlus className="w-16 h-16 hover:scale-125 hover:ease-in-out duration-300 "/>
                 </div>
             </ChangePCQIScrollContainer>
                     {

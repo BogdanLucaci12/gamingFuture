@@ -127,7 +127,9 @@ const AddUserForm = ({ url, content, refresh, setRefresh }: AddUserFormType) => 
                     />
                 </div>
                 <ButtonDisabled
-                    disabled={disabled}>
+                    disabled={disabled}
+                    className="w-[16em]"
+                    >
                     Add new {content} user</ButtonDisabled>
             </form>
         </AddUserFormContainer>

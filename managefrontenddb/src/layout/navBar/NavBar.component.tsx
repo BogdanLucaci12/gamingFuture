@@ -30,7 +30,6 @@ const NavBar = () => {
     const { activate, addDetail, confirmDeleteProduct } = useSelectored(state => state.overlaySlice)
     useEffect(() => {
        screenWidth >= 735 ? setShowControlPanel(true) : setShowControlPanel(false)
-
         screenWidth < 735 ? setChangeToastPosition(true) : setChangeToastPosition(false)
     }, [screenWidth])
 

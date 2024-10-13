@@ -59,6 +59,7 @@ const FormWithOneInput = ({ buttonContent, url, description, title, refresh }: F
                 <div className="mt-3">
                     <ButtonDisabled
                         disabled={disabled}
+                        className=""
                     >
                         {buttonContent}
                     </ButtonDisabled>

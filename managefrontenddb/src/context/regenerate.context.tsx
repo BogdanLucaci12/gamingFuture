@@ -1,4 +1,4 @@
-import { type ReactNode, createContext, useState } from "react";
+import { Dispatch, type ReactNode, SetStateAction, createContext, useState } from "react";
 
 type RegenerateContextType = {
     refreshEmployeeTable: boolean
@@ -14,7 +14,7 @@ type RegenerateContextType = {
     refreshImageDetail:boolean,
     setRefreshImageDetail:(value:boolean)=>void,
     refreshPCQ:boolean,
-    setRefreshPCQ: React.Dispatch<React.SetStateAction<boolean>>;
+    setRefreshPCQ: Dispatch<SetStateAction<boolean>>;
     refreshDetails: boolean,
     setRefreshDetails: (value: boolean) => void,
     refreshProductsHome:boolean,

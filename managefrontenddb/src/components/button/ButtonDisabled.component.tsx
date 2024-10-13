@@ -5,15 +5,18 @@ import { IoGameControllerOutline } from "react-icons/io5";
 type ButtonDisabledType={
 children:ReactNode,
 disabled:boolean,
-className:string | ''
+onClick?: ()=>void,
+className?:string
 }
 
-const ButtonDisabled = ({ children, disabled, className }: ButtonDisabledType) => {
+const ButtonDisabled = ({ children, disabled, onClick, className }: ButtonDisabledType) => {
 
   return (
       <Button
           disabled={disabled}
-       className={className}
+         className={`${className} text-[.9em]`}
+         size="custom"
+        onClick={onClick}
           >
           {
               disabled &&

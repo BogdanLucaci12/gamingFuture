@@ -14,9 +14,9 @@ const AddDetail = () => {
   const [sendimages, setSendImages] = useState<File[]>([]);
   const [maxNumberOfPhotos, setMaxNumberOfPhoto] = useState<boolean>(false)
   const [acceptedNumberOfPhoto, setAcceptedNumberOfPhoto] = useState<number>(0)
-  const {refreshDetails, setRefreshDetails}=useContext(RegenerateContext)
+  const { refreshDetails, setRefreshDetails } = useContext(RegenerateContext)
   const { productId } = useSelectored(state => state.changeProduct)
-  const form=useRef<HTMLFormElement>(null)
+  const form = useRef<HTMLFormElement>(null)
   const dispatch = useDispatcher()
 
   const handleCloseContainer = () => {
@@ -45,15 +45,22 @@ const AddDetail = () => {
     event.preventDefault()
     setDisabled(true)
 
-    const formData = new FormData(event.currentTarget);
-    sendimages.forEach((image) => {
-      formData.append("photos", image);
+    const takeDataInsertedByUsserInForm = new FormData(event.currentTarget);
+
+    const sendFormData = new FormData()
+    sendFormData.append("color", takeDataInsertedByUsserInForm.get('color') as string)
+    sendFormData.append("price", takeDataInsertedByUsserInForm.get('price') ?? '')
+    sendFormData.append("quantity", takeDataInsertedByUsserInForm.get('quantity') ?? '')
+    
+    sendimages.forEach((photo) => {
+      sendFormData.append("photos", photo);
     });
+
 
     const reponse = await fetch(`http://localhost:8626/employee/addDetailForProduct/${productId}`, {
       method: "post",
       credentials: "include",
-      body: formData
+      body: sendFormData
     })
     const statusReponse = await reponse.json()
     if (statusReponse.error) toast.error(statusReponse.error)
@@ -77,8 +84,8 @@ const AddDetail = () => {
         onSubmit={handleSubmitNewDetail}
         ref={form}
       >
-        <div className="flex flex-row gap-4">
-          <div className="w-1/3">
+        <div className="flex flex-row gap-4  max735:flex-col">
+          <div className="w-1/3 max735:w-[15em]">
             <Label htmlFor="color">Color</Label>
             <Input
               id="color"
@@ -86,14 +93,14 @@ const AddDetail = () => {
               placeholder="Color"
             />
           </div>
-          <div className="w-1/3">
+          <div className="w-1/3 max735:w-[15em]">
             <Label htmlFor="price">Price (RON)</Label>
             <Input
               id="price"
               name="price"
               placeholder="Price"
             /></div>
-          <div className="w-1/3">
+          <div className="w-1/3 max735:w-[15em]">
             <Label htmlFor="quantity">Quantity</Label>
             <Input
               id="quantity"
@@ -115,15 +122,15 @@ const AddDetail = () => {
                     accept="image/*"
                     multiple
                     onChange={handleFileChange}
-                    className="w-[25em]"
+                    className="w-[25em] max735:w-[15em]"
                   />
                 </>
               )
           }
         </div>
         <ButtonDisabled
-          className="w-[10em]"
           disabled={disabled}
+          className="w-[10em]"
         >
           Submit detail
         </ButtonDisabled>

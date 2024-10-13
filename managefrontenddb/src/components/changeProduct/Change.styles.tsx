@@ -5,6 +5,9 @@ width:100%;
 display:flex;
 flex-direction:column;
 padding:.5em;
+@media(max-width:735px){
+  margin-bottom:5em;
+}
 `
 
 export const ChangeDetailSubmitPCQContainer=styled.div`
@@ -15,6 +18,7 @@ gap:1em;
 
 @media(max-width:732px){
 width:100%;
+font-size:.7em;
 }
 `
 
@@ -57,4 +61,10 @@ gap:1em;
 @media(max-width:732px){
 flex-direction:column
 }
+`
+
+export const ChandeDescriptionContainer=styled.div`
+box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.2);
+padding:.5em;
+border-radius:1em
 `

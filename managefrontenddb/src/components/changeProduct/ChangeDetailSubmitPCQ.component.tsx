@@ -45,7 +45,7 @@ const ChangeDetailSubmitPCQ = ({ title, value, productDetailId }:ChangeDetailSub
   return (
     <ChangeDetailSubmitPCQContainer>
         <div className="flex flex-row gap-4">
-              <p className="bg-black text-white rounded-lg px-7 text-lg">{title}:</p> 
+              <p className="bg-black text-white rounded-lg px-7">{title}:</p> 
               <p className="rounded-lg border-2 px-7">{value} {hasTwoDecimalPlaces(value) && 'RON'}</p>
         </div>
       <form 
@@ -61,7 +61,7 @@ const ChangeDetailSubmitPCQ = ({ title, value, productDetailId }:ChangeDetailSub
             />
               <ButtonDisabled
               disabled={disabled}
-              className="w-[12em]"
+              className="w-[13em]"
               >
                 Submit new {title.toLowerCase()}
               </ButtonDisabled>

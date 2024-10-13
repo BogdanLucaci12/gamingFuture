@@ -138,7 +138,7 @@ async function updatePasswordEmployee (req, res) {
              const brandId = queryBrandId.rows[0].id
              //Using .lenght to assign the corect number to $
              fieldsToUpdate.push('brand_id = $' + (fieldsToUpdate.length + 1))
-             params.push(capitalizeFirstLetter(brandId))
+             params.push(brandId)
          }
          if (category) {
              const queryCategoryId = await employeePool.query("select id from categories where category_name=$1", [category])
@@ -158,7 +158,6 @@ async function updatePasswordEmployee (req, res) {
          querySnippet += fieldsToUpdate.join(', ') + ' WHERE id = $' + (fieldsToUpdate.length + 1);
          params.push(productId);
          const result = await employeePool.query(querySnippet, params)
-
          res.status(200).send({ success: "Product updated successfully" });
      } catch (error) {
          res.status(500).send({ error: error.message });

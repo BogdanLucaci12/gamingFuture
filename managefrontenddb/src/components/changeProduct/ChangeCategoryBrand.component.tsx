@@ -89,7 +89,7 @@ const ChangeBrandCategory = ({ brand, category, subcategory, productId }: Change
                 >
                     <ButtonDisabled
                         disabled={disabled}
-                    className='w-[13em]'
+                    className='w-[14em]'
                     >
                         Submit new changes
                     </ButtonDisabled>

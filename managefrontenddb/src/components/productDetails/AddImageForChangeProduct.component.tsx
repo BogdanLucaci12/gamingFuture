@@ -82,7 +82,6 @@ return (
             accept="image/*"
             multiple
             onChange={handleFileChange}
-            className="w-[25em]"
         />
            </>
     )

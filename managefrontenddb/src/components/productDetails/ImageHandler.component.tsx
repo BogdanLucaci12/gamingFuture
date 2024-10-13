@@ -62,7 +62,7 @@ const ImageHandler = () => {
                   {
                     !disabled &&
                     <MdDeleteForever
-                      className="absolute h-7 w-7 right-0 cursor-pointer hover:transition hover:ease-in-out hover:scale-125"
+                      className="absolute h-7 w-7 right-0 cursor-pointer hover:transition hover:ease-in-out hover:scale-125 bg-white rounded-lg"
                       onClick={() => handleDeleteImage(imageid)}
                     />
                   }

@@ -9,6 +9,7 @@ min-height:40em;
 box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.2);
 padding:.5em;
 width:100%;
+
 `
 
 type DetailContainerProps = {
@@ -31,6 +32,11 @@ background-color:white;
 cursor:pointer;
 color:black;
 }
+
+@media(max-width:735px){
+width:11em;
+font-size:.7em;
+}
 `
 export const ChangePCQIScrollContainer=styled.div`
 height:8em;
@@ -40,4 +46,8 @@ gap:1em;
 border-bottom: 3px solid rgba(0,0,0, .4);
 padding:.4em;
 width:100%;
+
+@media(max-width:735px){
+height:6em
+}
 `

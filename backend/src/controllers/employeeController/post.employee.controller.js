@@ -201,6 +201,7 @@ async function addDetailForProduct(req, res) {
         if (!quantity) { return res.status(400).send({ error: "No quantity was provided" }) }
         const priceToNumber = Number(price)
         //verified id in db
+        console.log(req.files.length)
         if (req.files.length > 7) { return res.status(400).send({ error: "Too many images" }) }
         const checkProductId = await employeePool.query("SELECT id FROM products WHERE id=$1", [productId])
         if (!checkProductId.rows[0].id) { throw new Error("No product with provided id was found") }
